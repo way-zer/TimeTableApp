@@ -1,0 +1,39 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Actions</mat-panel-title>
+    <mat-panel-description>You can change something HERE</mat-panel-description>
+  </mat-expansion-panel-header>
+  <div>
+    <mat-label>设定当前周:</mat-label>
+    <a mat-button (click)="setWeek(-1)" [disabled]="s.currentWeek.value <=1"> < </a>
+    <span>{{s.currentWeek|async}}</span>
+    <a mat-button (click)="setWeek(+1)"> > </a>
+  </div>
+</mat-expansion-panel>
+<table style="width: 100%">
+  <thead>
+  <tr>
+    <th style="width: 10%">第{{s.currentWeek|async}}周</th>
+    <th style="width: 18%">周一</th>
+    <th style="width: 18%">周二</th>
+    <th style="width: 18%">周三</th>
+    <th style="width: 18%">周四</th>
+    <th style="width: 18%">周五</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let row of map|async" style="height: 2em">
+    <ng-container *ngFor="let e of row" [ngSwitch]="e.type">
+      <td *ngSwitchCase="'start'" class="start">
+        <b>{{e.data}} </b>
+        <small>{{getTime(e.data)}}</small>
+      </td>
+      <td *ngSwitchCase="'class'" class="class" [attr.rowspan]="e.data.sectionNumber" (click)="showDetail(e.data)">
+        <b>{{e.data.name}}</b><br/>
+        <span>{{e.data.place}}</span>
+      </td>
+      <td *ngSwitchCase="'empty'" class="empty"></td>
+    </ng-container>
+  </tr>
+  </tbody>
+</table>

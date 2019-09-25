@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "myapp-wz": {
+      "hosting": {
+        "MyApp": [
+          "myapp-wz"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "myapp-wz"
+  }
+}

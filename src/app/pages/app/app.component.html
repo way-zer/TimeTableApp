@@ -1,0 +1,17 @@
+<title>{{title}}</title>
+<mat-card id="container">
+  <mat-card-title>
+    <nav mat-tab-nav-bar id="MenuPhone">
+      <a mat-tab-link
+         *ngFor="let link of links"
+         [routerLink]="link.path"
+         routerLinkActive #rla="routerLinkActive"
+         [active]="rla.isActive">
+        {{link.label}}
+      </a>
+    </nav>
+  </mat-card-title>
+  <mat-card-content>
+    <router-outlet></router-outlet>
+  </mat-card-content>
+</mat-card>

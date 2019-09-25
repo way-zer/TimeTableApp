@@ -1,0 +1,21 @@
+.start {
+  background-color: darkgray;
+  opacity: 0.8;
+  /*color: black;*/
+  /*width: 30px;*/
+}
+
+.class {
+  background-color: darkolivegreen;
+  border-radius: 15px;
+}
+
+th {
+  background-color: darkgray;
+  opacity: 0.6;
+}
+
+.empty {
+  background-color: darkgray;
+  opacity: 0.2;
+}
