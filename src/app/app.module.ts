@@ -24,6 +24,7 @@ import {TimeTableComponent} from './pages/time-table/time-table.component';
 import {UsefulLinksService} from './pages/useful-links/useful-links.service';
 import {TimeTableService} from './pages/time-table/time-table.service';
 import {ClassDetailComponent} from './pages/time-table/class-detail/class-detail.component';
+import {ClassImportService} from './pages/time-table/class-import.service';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {ClassDetailComponent} from './pages/time-table/class-detail/class-detail
   providers: [
     UsefulLinksService,
     TimeTableService,
+    ClassImportService,
   ],
   entryComponents: [
     ClassDetailComponent

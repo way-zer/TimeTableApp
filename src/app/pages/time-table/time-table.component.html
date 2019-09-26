@@ -4,10 +4,19 @@
     <mat-panel-description>You can change something HERE</mat-panel-description>
   </mat-expansion-panel-header>
   <div>
+    <button mat-button (drop)="onDrop($event)" (dragover)="$event.preventDefault()">Input Class: <b>Drag to Me</b> or
+      <b>Paste on it -></b></button>
+    <mat-form-field><input matInput (paste)="onPaste($event)" (change)="input.value=''" #input></mat-form-field>
+  </div>
+  <div>
     <mat-label>设定当前周:</mat-label>
     <a mat-button (click)="setWeek(-1)" [disabled]="s.currentWeek.value <=1"> < </a>
     <span>{{s.currentWeek|async}}</span>
     <a mat-button (click)="setWeek(+1)"> > </a>
+  </div>
+  <div>
+    <a style="color: gray">默认课表仅供预览,如需使用,请导入课表</a>
+    <a style="color: gray">该课程表系统目前只支持BUPT使用,其他等待适配</a>
   </div>
 </mat-expansion-panel>
 <table style="width: 100%">

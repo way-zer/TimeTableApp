@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Class, TimeTableService} from './time-table.service';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {ClassDetailComponent} from './class-detail/class-detail.component';
+import {ClassImportService} from './class-import.service';
 
 interface Cell {
   type: string;
@@ -18,7 +19,7 @@ interface Cell {
 export class TimeTableComponent implements OnInit {
   map: Observable<Cell[][]>;
 
-  constructor(private s: TimeTableService, private dialog: MatDialog) {
+  constructor(public s: TimeTableService, private dialog: MatDialog, private sInput: ClassImportService, private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -61,5 +62,25 @@ export class TimeTableComponent implements OnInit {
 
   setWeek(d: number) {
     this.s.currentWeek.next(this.s.currentWeek.value + d);
+  }
+
+  onDrop(event: DragEvent) {
+    const data = event.dataTransfer.getData('text/html');
+    if (!data.startsWith('<table')) {
+      return this.snackBar.open('Error: please follow the steps');
+    }
+    const dom = (new DOMParser()).parseFromString(data, 'text/html');
+    this.s.inputClasses(dom);
+    return this.snackBar.open('Input successful');
+  }
+
+  onPaste(event: ClipboardEvent) {
+    const data = event.clipboardData.getData('text/html');
+    if (!data.includes('<table')) {
+      return this.snackBar.open('Error: please follow the steps');
+    }
+    const dom = (new DOMParser()).parseFromString(data, 'text/html');
+    this.s.inputClasses(dom.body);
+    return this.snackBar.open('Input successful');
   }
 }

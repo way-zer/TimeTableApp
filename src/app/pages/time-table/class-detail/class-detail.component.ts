@@ -10,7 +10,7 @@ import {Class} from '../time-table.service';
 export class ClassDetailComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ClassDetailComponent>,
-              @Inject(MAT_DIALOG_DATA) private data: Class) {
+              @Inject(MAT_DIALOG_DATA) public data: Class) {
   }
 
   ngOnInit() {
