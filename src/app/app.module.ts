@@ -21,10 +21,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {TimeTableComponent} from './pages/time-table/time-table.component';
-import {UsefulLinksService} from './pages/useful-links/useful-links.service';
-import {TimeTableService} from './pages/time-table/time-table.service';
+import {UsefulLinksService} from './services/useful-links.service';
+import {TimeTableService} from './services/time-table.service';
 import {ClassDetailComponent} from './pages/time-table/class-detail/class-detail.component';
-import {ClassImportService} from './pages/time-table/class-import.service';
+import {ClassImportService} from './services/class-import.service';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireModule, FirebaseOptionsToken} from '@angular/fire';
+import {environment} from '../environments/environment';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -50,11 +54,15 @@ import {ClassImportService} from './pages/time-table/class-import.service';
     MatDialogModule,
     MatTooltipModule,
     MatIconModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
   providers: [
     UsefulLinksService,
     TimeTableService,
     ClassImportService,
+    {provide: FirebaseOptionsToken, useValue: environment.firebase}
   ],
   entryComponents: [
     ClassDetailComponent

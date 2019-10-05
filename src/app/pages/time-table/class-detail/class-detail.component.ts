@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Class} from '../time-table.service';
+import {Class} from '../../../services/types/Class';
 
 @Component({
   selector: 'app-class-detail',

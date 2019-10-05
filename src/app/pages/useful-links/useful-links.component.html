@@ -3,24 +3,25 @@
     <mat-panel-title>Add a link for yourself</mat-panel-title>
   </mat-expansion-panel-header>
   <div fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="20px">
-    <mat-form-field fxFlex.lt-sm="66" fxFlex.gt-md="33">
+    <mat-form-field fxFlex.gt-sm="33" fxFlex.lt-md="66">
       <mat-label>Title</mat-label>
-      <input matInput #title [formControl]="titleV" required>
+      <input #title [formControl]="titleV" matInput required>
       <mat-error>{{getErrorMessage(titleV)}}</mat-error>
     </mat-form-field>
-    <mat-form-field fxFlex.lt-sm="66" fxFlex.gt-md="33">
+    <mat-form-field fxFlex.gt-sm="33" fxFlex.lt-md="66">
       <mat-label>Url</mat-label>
-      <input matInput #url [formControl]="urlV" required>
+      <input #url [formControl]="urlV" matInput required>
       <mat-error>{{getErrorMessage(urlV)}}</mat-error>
     </mat-form-field>
-    <button mat-button fxFlex.lt-sm="66" (click)="addLink(title.value,url.value)"
-            [disabled]="(titleV.errors || urlV.errors) != null">Save Me!
+    <button (click)="addLink(title.value,url.value)" [disabled]="(titleV.errors || urlV.errors) != null"
+            fxFlex.lt-md="66"
+            mat-button>Save Me!
     </button>
   </div>
 </mat-expansion-panel>
 <mat-list>
-  <mat-list-item *ngFor="let link of links|async">
-    <a mat-button [href]="link.href">{{link.title}}<small style="margin-left: 5px;color: gray">{{link.href}}</small></a>
-    <button mat-button *ngIf="link.private" color="warn" class="right" (click)="removeLink(link)">Delete</button>
+  <mat-list-item *ngFor="let link of ser.usefulLinks|async">
+    <a [href]="link.href" mat-button>{{link.title}}<small style="margin-left: 5px;color: gray">{{link.href}}</small></a>
+    <button (click)="removeLink(link)" *ngIf="link.private" class="right" color="warn" mat-button>Delete</button>
   </mat-list-item>
 </mat-list>

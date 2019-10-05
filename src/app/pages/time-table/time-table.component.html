@@ -4,18 +4,44 @@
     <mat-panel-description>You can change something HERE</mat-panel-description>
   </mat-expansion-panel-header>
   <div>
-    <button mat-button (drop)="onDrop($event)" (dragover)="$event.preventDefault()">Input Class: <b>Drag to Me</b> or
-      <b>Paste on it -></b></button>
-    <mat-form-field><input matInput (paste)="onPaste($event)" (change)="input.value=''" #input></mat-form-field>
-  </div>
-  <div>
     <mat-label>设定当前周:</mat-label>
-    <a mat-button (click)="setWeek(-1)" [disabled]="s.currentWeek.value <=1"> < </a>
+    <a (click)="setWeek(-1)" [disabled]="s.currentWeek.value <=1" mat-button> < </a>
     <span>{{s.currentWeek|async}}</span>
-    <a mat-button (click)="setWeek(+1)"> > </a>
+    <a (click)="setWeek(+1)" mat-button> > </a>
   </div>
   <div>
-    <a style="color: gray">默认课表仅供预览,如需使用,请导入课表</a>
+    <mat-label>导入课程表:</mat-label>
+    <div fxHide.lt-md>
+      <button (dragover)="$event.preventDefault()" (drop)="inputData($event.dataTransfer)" mat-button>
+        Input Class: <b>Drag to Me</b> or <b>Paste on it -></b>
+      </button>
+      <mat-form-field><input #input (change)="input.value=''" (paste)="inputData($event.clipboardData)" matInput>
+      </mat-form-field>
+      <br/>
+    </div>
+    <a style="color: gray">导入功能仅电脑能用，手机请使用同步功能</a>
+  </div>
+  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px">
+    <mat-label fxFlexAlign.gt-sm="center">同步课程表:</mat-label>
+    <ng-container *ngIf="auth.user|async as user; else userLogin">
+      <button (click)="upload(user.uid)" [disabled]="!btnEnable" mat-button>上传课程表</button>
+      <button (click)="download(user.uid)" [disabled]="!btnEnable" mat-button>下载课程表</button>
+      <button (click)="auth.auth.signOut()" mat-button>登出(不删除配置)</button>
+    </ng-container>
+    <ng-template #userLogin>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input #loginEmail matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input #loginPassword matInput type="password">
+      </mat-form-field>
+      <button (click)="login(loginEmail.value,loginPassword.value)" mat-button>登录或注册</button>
+    </ng-template>
+  </div>
+  <div>
+    <a style="color: gray">默认课表仅供预览,如需使用,请导入课表</a><br/>
     <a style="color: gray">该课程表系统目前只支持BUPT使用,其他等待适配</a>
   </div>
 </mat-expansion-panel>
@@ -37,7 +63,7 @@
         <b>{{e.data}} </b>
         <small>{{getTime(e.data)}}</small>
       </td>
-      <td *ngSwitchCase="'class'" class="class" [attr.rowspan]="e.data.sectionNumber" (click)="showDetail(e.data)">
+      <td (click)="showDetail(e.data)" *ngSwitchCase="'class'" [attr.rowspan]="e.data.sectionNumber" class="class">
         <b>{{e.data.name}}</b><br/>
         <span>{{e.data.place}}</span>
       </td>

@@ -1,26 +1,9 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {concatMap, map} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {ClassImportAdapter, ClassImportService} from './class-import.service';
-
-export enum WeekType {
-  Normal, Double, Single
-}
-
-export class Class {
-  constructor(
-    public name: string,
-    public score: number,
-    public teacher: string,
-    public place: string,
-    public weeksS: number,
-    public weeksE: number,
-    public week: number,
-    public session: number,
-    public sectionNumber: number,
-    public weekOther: WeekType = WeekType.Normal) {
-  }
-}
+import {Class, WeekType} from './types/Class';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 const KEY_START_DATE = 'StartDate';
 const KEY_CLASS_LIST = 'ClassList';
@@ -45,11 +28,11 @@ const MOCK_CLASSES: Class[] = [
   providedIn: 'root'
 })
 export class TimeTableService {
-  public currentWeek = new BehaviorSubject<number>(TimeTableService.calWeek());
-  public classList = new BehaviorSubject(MOCK_CLASSES);
+  public readonly currentWeek = new BehaviorSubject<number>(TimeTableService.calWeek());
+  public readonly classList = new BehaviorSubject(MOCK_CLASSES);
   private adapter: ClassImportAdapter;
 
-  constructor(private importService: ClassImportService) {
+  constructor(private importService: ClassImportService, private db: AngularFirestore) {
     this.adapter = importService.getAdopter('BUPT');
     if (localStorage.getItem(KEY_CLASS_LIST)) {
       this.classList.next(JSON.parse(localStorage.getItem(KEY_CLASS_LIST)));
@@ -75,9 +58,8 @@ export class TimeTableService {
   }
 
   public getClasses(day: number): Observable<Class[]> {
-    return this.currentWeek.pipe(
-      concatMap((week) => this.classList.pipe(
-        map(l => l.filter(d => {
+    return combineLatest(this.currentWeek, this.classList).pipe(
+      map(([week, l]) => l.filter(d => {
           if (d.weeksS > week || d.weeksE < week) {
             return false;
           }
@@ -88,8 +70,9 @@ export class TimeTableService {
             return false;
           }
           return d.week === day;
-        })))
-      ));
+        })
+      )
+    );
   }
 
   public getTimeSet(): string[] {
@@ -98,5 +81,15 @@ export class TimeTableService {
 
   public inputClasses(dom: Node) {
     this.classList.next(this.adapter.parse(dom));
+  }
+
+  upload(uid: string): Promise<void> {
+    return this.db.collection('timeTable-config').doc(uid).set({classList: this.classList.value});
+  }
+
+  download(uid: string): Promise<void> {
+    return this.db.collection('timeTable-config').doc(uid).get().toPromise().then(value =>
+      this.classList.next(value.data().classList)
+    );
   }
 }

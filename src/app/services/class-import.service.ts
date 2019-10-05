@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Class, WeekType} from './time-table.service';
+import {Class, WeekType} from './types/Class';
 
 export interface ClassImportAdapter {
   maxDay: number;

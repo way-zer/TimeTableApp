@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Link, UsefulLinksService} from './useful-links.service';
+import {Link, UsefulLinksService} from '../../services/useful-links.service';
 import {MatSnackBar} from '@angular/material';
 import {FormControl, Validators} from '@angular/forms';
 
@@ -11,13 +11,11 @@ const URL_REGEX = /^(?:https?:\/\/)([-0-9a-zA-Z.]+)(.*)$/i;
   styleUrls: ['./useful-links.component.css']
 })
 export class UsefulLinksComponent implements OnInit {
-  constructor(private ser: UsefulLinksService, private snackBar: MatSnackBar) {
-  }
-
-  links = this.ser.getUsefulLinks();
-
   titleV = new FormControl('', [Validators.required]);
   urlV = new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]);
+
+  constructor(public ser: UsefulLinksService, private snackBar: MatSnackBar) {
+  }
 
   ngOnInit() {
   }
