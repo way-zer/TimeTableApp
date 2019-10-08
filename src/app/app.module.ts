@@ -29,6 +29,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireModule, FirebaseOptionsToken} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
     MatIconModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     UsefulLinksService,

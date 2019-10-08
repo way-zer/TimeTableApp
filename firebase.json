@@ -14,7 +14,7 @@
     ],
     "headers": [
       {
-        "source": "**/*.@(js|json|ico)",
+        "source": "**/*.@(js|css|json|ico)",
         "headers": [ {
           "key": "Cache-Control",
           "value": "max-age=360000"

@@ -12,6 +12,16 @@ const routes: Routes = [
   {path: 'timeTable', component: TimeTableComponent},
 ];
 
+@Injectable()
+export class MyPreloadingStrategy implements PreloadingStrategy {
+  preload(route: Route, load: () => Observable<any>): Observable<any> {
+    if (route.data && route.data.preload) {
+      return load();
+    }
+    return undefined;
+  }
+}
+
 @NgModule({
   imports: [RouterModule.forRoot(routes, {preloadingStrategy: MyPreloadingStrategy})],
   exports: [RouterModule],
