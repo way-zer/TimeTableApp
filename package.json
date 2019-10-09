@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "main": "src/electron-main.js",
   "scripts": {
+    "android": "tns run android",
+    "ios": "tns run ios",
+    "mobile": "tns run",
+    "preview": "tns preview",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -27,11 +31,16 @@
     "@angular/pwa": "^0.803.8",
     "@angular/router": "~8.2.5",
     "@angular/service-worker": "~8.2.5",
+    "@nativescript/schematics": "^0.7.2",
     "crypto-js": "^3.1.9-1",
     "firebase": ">= 5.5.7 <7",
     "hammerjs": "^2.0.8",
+    "nativescript-angular": "~8.0.1",
+    "nativescript-theme-core": "~1.0.4",
     "qs": "^6.9.0",
+    "reflect-metadata": "~0.1.12",
     "rxjs": "~6.4.0",
+    "tns-core-modules": "~6.0.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },
@@ -41,12 +50,15 @@
     "@angular/cli": "~8.3.4",
     "@angular/compiler-cli": "~8.2.5",
     "@angular/language-service": "~8.2.5",
+    "@nativescript/schematics": "~0.7.0",
+    "@nativescript/tslint-rules": "~0.0.2",
     "@types/crypto-js": "^3.1.43",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "@types/qs": "^6.5.3",
     "codelyzer": "^5.0.0",
+    "css-loader": "^3.2.0",
     "electron": "^6.0.10",
     "firebase-tools": "^6.10.0",
     "fuzzy": "^0.1.3",
@@ -59,9 +71,17 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "nativescript-dev-webpack": "~1.0.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.5.3",
+    "webpack-cli": "^3.3.9"
+  },
+  "nativescript": {
+    "id": "org.nativescript.ngsample",
+    "tns-android": {
+      "version": "6.1.2"
+    }
   }
 }

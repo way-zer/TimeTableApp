@@ -1,5 +1,8 @@
 {
-  "extends": "tslint:recommended",
+  "extends": [
+    "tslint:recommended",
+    "@nativescript/tslint-rules"
+  ],
   "rules": {
     "array-type": false,
     "arrow-parens": false,
@@ -84,7 +87,15 @@
     "template-banana-in-box": true,
     "template-no-negated-async": true,
     "use-lifecycle-interface": true,
-    "use-pipe-transform-interface": true
+    "use-pipe-transform-interface": true,
+    "prefer-mapped-imports": [
+      true,
+      {
+        "prefix": "@src/",
+        "prefix-mapped-to": "src/",
+        "base-url": "./"
+      }
+    ]
   },
   "rulesDirectory": [
     "codelyzer"

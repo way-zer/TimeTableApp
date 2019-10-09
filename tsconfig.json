@@ -17,7 +17,16 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@src/*": [
+        "src/*.android.ts",
+        "src/*.ios.ts",
+        "src/*.tns.ts",
+        "src/*.web.ts",
+        "src/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
