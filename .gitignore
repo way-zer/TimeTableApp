@@ -42,6 +42,11 @@ yarn-error.log
 testem.log
 /typings
 
+# NativeScriptnode_modules/
+platforms/
+hooks/
+src/**/*.js
+
 # System Files
 .DS_Store
 Thumbs.db

@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 import {RouteLinkService} from './services/route-link.service';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/usefulLinks', pathMatch: 'full'},
+  {path: '', redirectTo: '/timeTable', pathMatch: 'full'},
   {path: 'usefulLinks', component: UsefulLinksComponent},
   {path: 'timeTable', component: TimeTableComponent},
 ];
