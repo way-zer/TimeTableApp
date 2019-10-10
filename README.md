@@ -1,27 +1,23 @@
-# MyApp
+一个使用Angular制作的课程表H5App [点我打开网页](https://myapp-wz.web.app)  
+> 第一周没课，请切换当前周查看效果
+![预览图](https://user-images.githubusercontent.com/15688938/66574080-38b51200-eba6-11e9-81c0-d9ef88bac0db.png)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.4.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## 特性
+- [开源](https://github.com/way-zer/myapp)
+- 没广告，免安装
+- 使用PWA技术,可**离线运行**
+- 支持PC，安卓，苹果多端(添加到桌面堪比原生App)
+- 拥有自动导入功能(**应用内无需输入账号密码，安全可靠**)
+- 拥有备份同步功能, 课程表不丢失，多端可同步
+## 自动导入功能教程
+手动登入教务系统，复制课程部分(如同), 拖动或粘贴到小程序特定区域
+> 目前仅支持BUPT, 其他学校请提交 Issue 请求适配
+![课程表导课教程](https://user-images.githubusercontent.com/15688938/66573927-f986c100-eba5-11e9-8961-792e5fe54416.png)
+## 兼容性情况
+PC端: Chrome
+安卓: Chrome
+IOS: Safari
+## 其他
+暂不允许转载及在其他地方使用本项目代码  
+欢迎在Issue中提功能请求  
+欢迎联系我进行开发交流(学习党, 问题请提Issue, 请勿打扰)
