@@ -69,31 +69,30 @@ export class TimeTableComponent implements OnInit {
 
   inputData(transfer: DataTransfer) {
     const data = transfer.getData('text/html');
-    if (!data.includes('<table')) {
+    if (!data) {
       return this.snackBar.open('Error: please follow the steps');
     }
     const dom = (new DOMParser()).parseFromString(data, 'text/html');
-    this.s.inputClasses(dom.body || dom);
-    return this.snackBar.open('Input successful');
+    this.snackBar.open(this.s.inputClasses(dom.body));
   }
 
   login(email: string, password: string) {
     this.snackBar.open('Logging in,Please Wait!');
-    this.auth.auth.signInWithEmailAndPassword(email, password).then(value1 => {
+    this.auth.auth.signInWithEmailAndPassword(email, password).then(_ => {
       this.snackBar.open('Signing in Successful!');
-    }).catch((data:{code, message}) => {
+    }).catch((data: {code, message}) => {
       if (data.code === 'auth/user-not-found') {
-        return this.snackBar.open("Check your email: "+email+", "+data.message,"Click Me to Register").onAction()
-          .toPromise().then(()=>{//Register
+        return this.snackBar.open('Check your email: ' + email + ', ' + data.message, 'Click Me to Register').onAction()
+          .toPromise().then(() => {// Register
           return this.auth.auth.createUserWithEmailAndPassword(email, password).then(() => {
             this.snackBar.open('Creating user Successful!');
-          })
-        })
+          });
+        });
       } else {
-        throw data
+        throw data;
       }
-    }).catch(({code, message}) => {
-      this.snackBar.open(message)
+    }).catch(({_, message}) => {
+      this.snackBar.open(message);
     });
   }
 

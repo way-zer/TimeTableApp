@@ -9,9 +9,16 @@
     <span>{{s.currentWeek|async}}</span>
     <a (click)="setWeek(+1)" mat-button> > </a>
   </div>
+  <mat-expansion-panel style="margin: 10px 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>手动添加课程</mat-panel-title>
+    </mat-expansion-panel-header>
+    <a style="color: gray">待添加, 如需修改, 请使用浏览器开发者工具修改localStorage内数据, 并刷新网页</a><br/>
+    <a style="color: gray">手机请使用同步功能</a>
+  </mat-expansion-panel>
   <div>
-    <mat-label>导入课程表:</mat-label>
-    <div fxHide.lt-md>
+    <mat-label>导入课程表:<a style="color: gray">导入功能仅电脑能用，手机请使用同步功能</a></mat-label>
+    <div fxHide.xs>
       <button (dragover)="$event.preventDefault()" (drop)="inputData($event.dataTransfer)" mat-button>
         Input Class: <b>Drag to Me</b> or <b>Paste on it -></b>
       </button>
@@ -19,7 +26,6 @@
       </mat-form-field>
       <br/>
     </div>
-    <a style="color: gray">导入功能仅电脑能用，手机请使用同步功能</a>
   </div>
   <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px">
     <mat-label fxFlexAlign.gt-sm="center">同步课程表:</mat-label>

@@ -79,8 +79,23 @@ export class TimeTableService {
     return this.adapter.timeTable;
   }
 
-  public inputClasses(dom: Node) {
-    this.classList.next(this.adapter.parse(dom));
+  /**
+   * @param dom Normally is Node body
+   * @return message
+   */
+  public inputClasses(dom: HTMLElement): string {
+    try {
+      const next = this.adapter.parse(dom);
+      if (!next.length) {
+        // noinspection ExceptionCaughtLocallyJS
+        throw Error('Empty ClassList');
+      }
+      this.classList.next(next);
+    } catch (e) {
+      console.error(dom, e);
+      return 'Input fail!' + e;
+    }
+    return 'Input successful';
   }
 
   upload(uid: string): Promise<void> {

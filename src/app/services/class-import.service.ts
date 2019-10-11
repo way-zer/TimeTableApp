@@ -5,8 +5,11 @@ export interface ClassImportAdapter {
   maxDay: number;
   timeTable: string[];
 
-  // Can throw Error
-  parse(dom: Node): Class[];
+  /**
+   * @param dom Normally is Node body
+   * @throws Error Any Exception
+   */
+  parse(dom: HTMLElement): Class[];
 }
 
 const LENGTH_TABLE = 18;
@@ -30,8 +33,11 @@ class BUPTParser implements ClassImportAdapter {
     '20:10-20:55',
   ];
 
-  parse(dom: Node): Class[] {
-    const data = (new XPathEvaluator()).evaluate('//table/tbody/tr', dom);
+  parse(dom: HTMLElement): Class[] {
+    const tableNodes = dom.getElementsByClassName('displayTag');
+    if (!tableNodes.length) {throw Error('invalid Node'); }
+    const data = (new XPathEvaluator()).evaluate('tbody/tr', tableNodes.item(tableNodes.length - 1),
+      null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     const loc: string[] = [];
     const formatted = [];
     let n: Node;
