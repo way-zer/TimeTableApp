@@ -3,6 +3,14 @@
   <p><label>教师:</label>{{data.teacher}}</p>
   <p><label>学分:</label>{{data.score}}</p>
   <p><label>地点:</label>{{data.place}}</p>
+  <div>
+    <label>时间:</label>
+    <p>
+      <ng-container *ngFor="let t of data.times">
+        {{getWeek(t)}}&emsp;{{weekDays[t.weekDay-1]}}&emsp;{{t.session.start}}-{{t.session.end}}&emsp;{{t.place}}<br/>
+      </ng-container>
+    </p>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>OK!</button>

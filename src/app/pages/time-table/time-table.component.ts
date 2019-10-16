@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TimeTableService} from '../../services/time-table.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ClassDetailComponent} from './class-detail/class-detail.component';
 import {ClassImportService} from '../../services/class-import.service';
-import {Class} from '../../services/types/Class';
+import {Class, ClassTime, Range} from '../../services/types/Class';
 import {AngularFireAuth} from '@angular/fire/auth';
 
 interface Cell {
   type: string;
-  data: number | Class | null;
+  data: number | Class & { time: ClassTime, enable: boolean, length: number } | null;
 }
 
 @Component({
@@ -28,26 +28,26 @@ export class TimeTableComponent implements OnInit {
 
   ngOnInit() {
     const maxClass = this.s.getTimeSet().length;
-    const os = [1, 2, 3, 4, 5].map(d => this.s.getClasses(d));
-    this.map = combineLatest(os).pipe(
-      map((cs: Class[][]) => {
-        const m = [];
+    this.map = this.s.getClasses().pipe(
+      map(([week, cs]) => {
+        const m: Cell[][] = [];
         for (let ii = 1; ii <= maxClass; ii++) {
           const l: Cell[] = [{type: 'start', data: ii}];
-          for (let i = 0; i < 5; i++) {
-            const found = cs[i].find(c => (c.session <= ii && (c.session + c.sectionNumber) > ii));
-            if (found) {
-              if (found.session === ii) {
-                l.push({type: 'class', data: found});
-              } else {
-                l.push({type: 'pass', data: null});
-              }
-            } else {
-              l.push({type: 'empty', data: null});
-            }
+          for (let d = 0; d < 5; d++) {
+            l.push({type: 'empty', data: null});
           }
           m.push(l);
         }
+        cs.forEach(c => c.times.forEach(t => {
+          let s = t.session.start - 1;
+          const data = {type: 'class', data: {...c, time: t, enable: ClassTime.include(t, week), length: Range.getLength(t.session)}};
+          if (ClassTime.include(t, week) || m[s][t.weekDay].type === 'empty') {
+            m[s][t.weekDay] = data;
+          }
+          for (s += 1; s < t.session.end; s++) {
+            m[s][t.weekDay] = {type: 'pass', data: null};
+          }
+        }));
         return m;
       })
     );
@@ -80,14 +80,14 @@ export class TimeTableComponent implements OnInit {
     this.snackBar.open('Logging in,Please Wait!');
     this.auth.auth.signInWithEmailAndPassword(email, password).then(_ => {
       this.snackBar.open('Signing in Successful!');
-    }).catch((data: {code, message}) => {
+    }).catch((data: { code, message }) => {
       if (data.code === 'auth/user-not-found') {
         return this.snackBar.open('Check your email: ' + email + ', ' + data.message, 'Click Me to Register').onAction()
           .toPromise().then(() => {// Register
-          return this.auth.auth.createUserWithEmailAndPassword(email, password).then(() => {
-            this.snackBar.open('Creating user Successful!');
+            return this.auth.auth.createUserWithEmailAndPassword(email, password).then(() => {
+              this.snackBar.open('Creating user Successful!');
+            });
           });
-        });
       } else {
         throw data;
       }

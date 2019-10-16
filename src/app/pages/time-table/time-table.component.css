@@ -10,6 +10,12 @@
   border-radius: 15px;
 }
 
+.noClass {
+  background-color: darkgray;
+  border-radius: 15px;
+  opacity: 0.4;
+}
+
 th {
   background-color: darkgray;
   opacity: 0.6;
