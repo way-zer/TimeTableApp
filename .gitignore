@@ -46,6 +46,7 @@ testem.log
 platforms/
 hooks/
 src/**/*.js
+!/src/electron-main.js
 
 # System Files
 .DS_Store

@@ -12,6 +12,14 @@ const routes: Routes = [
   {path: 'timeTable', component: TimeTableComponent},
 ];
 
+if (environment.desktop) {
+  routes.push({
+    path: 'desktop',
+    loadChildren: () => import('./desktop/desktop.module').then(mod => mod.DesktopModule),
+    data: {preload: true},
+  });
+}
+
 @Injectable()
 export class MyPreloadingStrategy implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {

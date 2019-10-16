@@ -1,0 +1,22 @@
+<p>gym-try works!</p>
+<form>
+  <mat-form-field>
+    <mat-label>学号</mat-label>
+    <input #eKey matInput required>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>日期</mat-label>
+    <mat-select #date required>
+      <mat-option *ngFor="let i of dates" [value]="i">{{i}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>时间段</mat-label>
+    <mat-select #timeSlot required>
+      <mat-option value=1>6:00-7:00</mat-option>
+      <mat-option value=2>7:00-8:00</mat-option>
+      <mat-option value=3>8:00-9:00</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button (click)="request(eKey.value,date.value,timeSlot.value)" mat-button>Click!</button>
+</form>
