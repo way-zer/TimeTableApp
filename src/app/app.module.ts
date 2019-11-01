@@ -18,7 +18,7 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 import {HttpClientModule} from '@angular/common/http';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {TimeTableComponent} from './pages/time-table/time-table.component';
 import {UsefulLinksService} from './services/useful-links.service';
@@ -30,6 +30,12 @@ import {AngularFireModule, FirebaseOptionsToken} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { TimeTableSettingComponent } from './pages/time-table/time-table-settting/time-table-setting.component';
+import { MyScheduleComponent } from './pages/my-schedule/my-schedule.component';
+import { ScheduleListComponent } from './pages/my-schedule/schedule-list/schedule-list.component';
+import {MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -37,6 +43,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     UsefulLinksComponent,
     TimeTableComponent,
     ClassDetailComponent,
+    TimeTableSettingComponent,
+    MyScheduleComponent,
+    ScheduleListComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,7 +67,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    FormsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [
     UsefulLinksService,

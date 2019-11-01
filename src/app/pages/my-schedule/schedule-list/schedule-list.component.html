@@ -1,0 +1,24 @@
+<mat-accordion>
+  <mat-list-item  *ngFor="let item of data|async">
+    <mat-expansion-panel style="width: 100%;text-align: left" hideToggle>
+      <mat-expansion-panel-header fxLayout>
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleTask(item)" [checked]="!!item.data.finished">
+            <!--          <button (click)="$event.stopPropagation()&&check(item)" [disabled]="!!item.data.finished" color="primary" mat-button>Check It</button>-->
+            <span [class.finished]="!!item.data.finished">{{item.data.title}}</span>
+            <span *ngIf="!!item.data.finished">(FINISHED)</span>
+            <small style="margin-left: 5px;color: gray">{{briefMap(item)}}</small>
+        </mat-checkbox>
+      </mat-expansion-panel-header>
+      <ng-template let-time="time" let-data="data" #defaultTemplate>
+        <h5>在{{humanize(time)}}截止</h5>
+        <p>{{data.content}}</p>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="template||defaultTemplate; context:item"></ng-container>
+      <mat-action-row>
+        <mat-checkbox color="warn" #checkbox>
+          Be Careful<button mat-button color="warn" (click)="deletePlan(item)" [disabled]="!checkbox.checked">{{checkbox.checked?"This can't recover":"<-Check Before || Delete It"}}</button>
+        </mat-checkbox>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-list-item>
+</mat-accordion>

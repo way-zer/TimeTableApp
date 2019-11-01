@@ -11,6 +11,32 @@
       </ng-container>
     </p>
   </div>
+  <mat-card>
+    <mat-card-title>作业</mat-card-title>
+    <app-schedule-list [filter]="taskFilter" [briefMap]="briefMap">
+      <ng-template let-data="data">{{data.content}}</ng-template>
+    </app-schedule-list>
+    <mat-card-actions>
+      <form (ngSubmit)="addHomeWork()" [formGroup]="newTaskForm">
+        <mat-form-field  style="width: 100%">
+          <mat-label>内容</mat-label>
+          <textarea formControlName="content" matInput cdkTextareaAutosize></textarea>
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+          <mat-label>截止时间</mat-label>
+          <mat-select formControlName="time">
+            <mat-option value="class">下次上课</mat-option>
+            <mat-option value="week">下次同一时间</mat-option>
+            <mat-option value="custom" disabled>自定义时间(功能开发中)</mat-option>
+          </mat-select>
+        </mat-form-field>
+<!--        <br/>-->
+        <button mat-button type="reset" color="warn">重置</button>
+        <button mat-button type="submit" color="accent" [disabled]="!newTaskForm.valid">添加</button>
+      </form>
+    </mat-card-actions>
+  </mat-card>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>OK!</button>
