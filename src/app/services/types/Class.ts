@@ -1,20 +1,20 @@
+import {JsonHelper} from '../../utils/json-helper';
+import {isObject} from 'util';
+
 export enum WeekType {
   Weeks, DoubleWeek, SingleWeek, Range
 }
 
 export class Range {
-  constructor(
-    public start: number,
-    public end: number,
-  ) {
+  public start: number;
+  public end: number;
+
+  public include(i: number) {
+    return !(i < this.start || i > this.end);
   }
 
-  public static include(range: Range, i: number) {
-    return !(i < range.start || i > range.end);
-  }
-
-  public static getLength(range: Range) {
-    return range.end - range.start + 1;
+  public getLength() {
+    return this.end - this.start + 1;
   }
 }
 
@@ -23,32 +23,34 @@ export interface OtherData {
 }
 
 export class ClassTime {
-  constructor(
-    public weeks: number[] | Range,
-    public weekDay: number,
-    public session: Range,
-    public place?: string,
-    /**
-     * set if having different place
-     */
-    public type: WeekType = WeekType.Range,
-  ) {
+  public weeks: number[] | Range;
+  public weekDay: number;
+  public session: Range;
+  public place?: string;
+  /**
+   * set if having different place
+   */
+  public type: WeekType = WeekType.Range;
+
+  static afterParse(obj: ClassTime) {
+    obj.weeks = isObject(obj.weeks) ? JsonHelper.parseObject(Range, obj.weeks as Range) : obj.weeks;
+    obj.session = JsonHelper.parseObject(Range, obj.session);
   }
 
-  public static include(time: ClassTime, week: number, weekDay?: number, session?: number): boolean {
-    if (weekDay && weekDay !== time.weekDay) {
+  public include(week: number, weekDay?: number, session?: number): boolean {
+    if (weekDay && weekDay !== this.weekDay) {
       return false;
     }
-    if (session && !Range.include(time.session, session)) {
+    if (session && !this.session.include(session)) {
       return false;
     }
-    if (time.type === WeekType.Weeks) {
-      return (time.weeks as number[]).includes(week);
+    if (this.type === WeekType.Weeks) {
+      return (this.weeks as number[]).includes(week);
     }
-    if (!Range.include(time.weeks as Range, week)) {
+    if (!(this.weeks as Range).include(week)) {
       return false;
     }
-    switch (time.type) {
+    switch (this.type) {
       case WeekType.SingleWeek:
         return week % 2 === 1;
       case WeekType.DoubleWeek:
@@ -60,13 +62,14 @@ export class ClassTime {
 }
 
 export class Class {
-  constructor(
-    public name: string,
-    public score: number,
-    public teacher: string,
-    public place: string,
-    public times: ClassTime[],
-    public otherData: OtherData[] = [],
-  ) {
+  public name: string;
+  public score: number;
+  public teacher: string;
+  public place: string;
+  public times: ClassTime[];
+  public otherData: OtherData[] = [];
+
+  static afterParse(obj: Class) {
+    obj.times = obj.times.map(value => JsonHelper.parseObject(ClassTime, value));
   }
 }

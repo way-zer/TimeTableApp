@@ -37,8 +37,8 @@ export class TimeTableComponent implements OnInit {
         }
         cs.forEach(c => c.times.forEach(t => {
           let s = t.session.start - 1;
-          const data = {type: 'class', data: {...c, time: t, enable: ClassTime.include(t, week), length: Range.getLength(t.session)}};
-          if (ClassTime.include(t, week) || m[s][t.weekDay].type === 'empty') {
+          const data = {type: 'class', data: {...c, time: t, enable: t.include(week), length: t.session.getLength()}};
+          if (t.include(week) || m[s][t.weekDay].type === 'empty') {
             m[s][t.weekDay] = data;
           }
           for (s += 1; s < t.session.end; s++) {

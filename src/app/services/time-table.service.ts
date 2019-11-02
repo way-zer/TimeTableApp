@@ -3,26 +3,53 @@ import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {ClassImportAdapter, ClassImportService} from './class-import.service';
 import {Class, ClassTime, Range, WeekType} from './types/Class';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {JsonHelper} from '../utils/json-helper';
 
 const KEY_START_DATE = 'StartDate';
 const KEY_CLASS_LIST = 'ClassList_2';
 const TIME_DAY = 1000 * 60 * 60 * 24;
-const MOCK_CLASSES: Class[] = [
-  // new Class('大学生心理健康', 0.5, '杜玉春', '办-一层多功能厅', 3, 18, 1, 1, 2),
-  new Class('安全教育', 0.0, '胡承蓉', '', []),
-  new Class('信息与通信工程专业导论', 3.0, '信通01', 'N319',
-    [new ClassTime(new Range(4, 18), 5, new Range(1, 2)), new ClassTime(new Range(5, 18), 2, new Range(1, 2))]),
-  // new Class('C/C++程序设计与编程方法', 3.0, '许桂平', 'N103', 3, 18, 5, 3, 3),
-  new Class('数学分析(上)', 6.0, '刘宝生', 'N103',
-    [new ClassTime(new Range(3, 18), 4, new Range(6, 8)), new ClassTime(new Range(3, 18), 2, new Range(3, 5))]),
-  // new Class('思想道德修养与法律基础', 3.0, '温雪', '办-一层多功能厅', 3, 18, 1, 3, 3),
-  // new Class('线性代数', 6.0, '李亚杰', 'N103', 3, 18, 2, 9, 3),
-  // new Class('形势与政策1', 0.4, '马院01', '办-一层多功能厅', 8, 10, 1, 1, 2),
-  new Class('综合英语（A）', 3.0, '李楠 李智远', 'N302', [
-    new ClassTime(new Range(3, 18), 1, new Range(8, 9), 'N302'),
-    new ClassTime(new Range(3, 18), 3, new Range(1, 2), 'N406', WeekType.DoubleWeek)]),
-  // new Class('创新创业能力与方法（双创）', 3.0, '任维政', 'N206', 3, 18, 2, 13, 2),
-];
+const MOCK_CLASSES: Class[] = JsonHelper.parseArray(Class, [
+  {
+    name: '大学生心理健康', score: 0.5, teacher: '杜玉春', place: '办-一层多功能厅', times: [
+      {weeks: {start: 3, end: 6}, weekDay: 1, session: {start: 1, end: 2}}]
+  },
+  {
+    name: '思想道德修养与法律基础', score: 3.0, teacher: '温雪', place: '办-一层多功能厅', times: [
+      {weeks: {start: 3, end: 18}, weekDay: 1, session: {start: 3, end: 5}}]
+  },
+  {
+    name: '形势与政策1', score: 0.4, teacher: '马院01', place: '办-一层多功能厅', times: [
+      {weeks: {start: 8, end: 10}, weekDay: 1, session: {start: 1, end: 2}}]
+  },
+  {name: '安全教育', score: 0.0, teacher: '胡承蓉', place: '', times: []},
+  {
+    name: '信息与通信工程专业导论', score: 3.0, teacher: '信通01', place: 'N319', times: [
+      {weeks: {start: 4, end: 18}, weekDay: 5, session: {start: 1, end: 2}},
+      {weeks: {start: 5, end: 18}, weekDay: 2, session: {start: 1, end: 2}}]
+  },
+  {
+    name: 'C/C++程序设计与编程方法', score: 3.0, teacher: '胡承蓉', place: 'N103', times: [
+      {weeks: {start: 3, end: 18}, weekDay: 5, session: {start: 3, end: 5}}]
+  },
+  {
+    name: '数学分析(上)', score: 6.0, teacher: '刘宝生', place: 'N103', times: [
+      {weeks: {start: 3, end: 18}, weekDay: 4, session: {start: 6, end: 8}},
+      {weeks: {start: 3, end: 18}, weekDay: 2, session: {start: 3, end: 5}}]
+  },
+  {
+    name: '线性代数', score: 6.0, teacher: '李亚杰', place: 'N103', times: [
+      {weeks: {start: 3, end: 18}, weekDay: 2, session: {start: 9, end: 11}}]
+  },
+  {
+    name: '综合英语（A）', score: 3.0, teacher: '李楠 李智远', place: 'N302', times: [
+      {weeks: {start: 3, end: 18}, weekDay: 1, session: {start: 8, end: 9}, place: 'N302'},
+      {weeks: {start: 3, end: 18}, weekDay: 3, session: {start: 1, end: 2}, place: 'N406', type: WeekType.DoubleWeek}]
+  },
+  {
+    name: '创新创业能力与方法（双创）', score: 3.0, teacher: '任维政', place: 'N206', times: [
+      {weeks: {start: 3, end: 18}, weekDay: 2, session: {start: 13, end: 14}}]
+  },
+]);
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +65,7 @@ export class TimeTableService {
       importService.getAdopter(this.adapterName).then(a => this.adapter.next(a));
     }
     if (localStorage.getItem(KEY_CLASS_LIST)) {
-      this.classList.next(JSON.parse(localStorage.getItem(KEY_CLASS_LIST)));
+      this.classList.next(JsonHelper.parseArray(Class, localStorage.getItem(KEY_CLASS_LIST)));
     }
     this.classList.subscribe(data => {
       localStorage.setItem(KEY_CLASS_LIST, JSON.stringify(data));
