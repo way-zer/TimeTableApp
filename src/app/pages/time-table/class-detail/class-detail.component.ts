@@ -1,6 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Class} from '../../../services/types/Class';
+import {MAT_DIALOG_DATA} from '@angular/material';
+import {Class, ClassTime, Range, WeekType} from '../../../services/types/Class';
+import {humanizeTime, Plan, PlanType} from '../../../services/types/Plan';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {MyScheduleService} from '../../../services/my-schedule.service';
+import * as Moment from 'moment';
 
 @Component({
   selector: 'app-class-detail',
@@ -9,11 +13,60 @@ import {Class} from '../../../services/types/Class';
 })
 export class ClassDetailComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<ClassDetailComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: Class) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: Class& { time: ClassTime} ,
+    private scheduleService: MyScheduleService,
+  ) {}
+
+  get taskFilter() {
+    return (task: Plan) => (task.type === PlanType.HomeWork && task.data.className === this.data.name);
   }
+  weekDays = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+
+  newTaskForm = new FormGroup({
+    content: new FormControl('', Validators.required),
+    time: new FormControl('', Validators.required),
+    });
 
   ngOnInit() {
   }
 
+  getWeek(t: ClassTime) {
+    if (t.type === WeekType.Weeks) {
+      return (t.weeks as number[]).join(', ');
+    }
+    let str = (t.weeks as Range).start + '-' + (t.weeks as Range).end + '周';
+    if (t.type === WeekType.DoubleWeek) {
+      str += '(双周)';
+    } else if (t.type === WeekType.SingleWeek) {
+      str += '(单周)';
+    } else { str += ''; }
+    return str;
+  }
+  briefMap(plan: Plan) {
+    return humanizeTime(plan.time);
+    // TODO "下次课"具体化
+  }
+
+  addHomeWork() {
+    const {content, time} = this.newTaskForm.value;
+    const data = {
+      title: this.data.name + '作业',
+      brief: '',
+      className: this.data.name,
+      _time: time,
+      content,
+    };
+    let newt;
+    if (time === 'week') {
+      const moment = Moment();
+      moment.weekday(this.data.time.weekDay);
+      moment.add(1, 'w');
+      newt = moment.unix() * 1000;
+    } else {
+      newt = '下次课';
+    }
+    this.scheduleService.addPlan(new Plan(PlanType.HomeWork, newt, data));
+    this.newTaskForm.reset();
+  }
 }
