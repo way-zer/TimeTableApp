@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {ClassImportAdapter, ClassImportService} from './class-import.service';
 import {Class, ClassTime, Range, WeekType} from './types/Class';
-import {AngularFirestore} from '@angular/fire/firestore';
 import {JsonHelper} from '../utils/json-helper';
+import * as AV from 'leancloud-storage';
+import {padNumber} from '../utils';
 
 const KEY_START_DATE = 'StartDate';
 const KEY_CLASS_LIST = 'ClassList_2';
@@ -60,7 +61,7 @@ export class TimeTableService {
   private adapterName = this.importService.defaultAdopter.name;
   private adapter = new BehaviorSubject<ClassImportAdapter>(this.importService.defaultAdopter);
 
-  constructor(private importService: ClassImportService, private db: AngularFirestore) {
+  constructor(private importService: ClassImportService) {
     if (this.adapterName !== this.adapter.value.name) {
       importService.getAdopter(this.adapterName).then(a => this.adapter.next(a));
     }
@@ -114,13 +115,18 @@ export class TimeTableService {
     return 'Input successful';
   }
 
-  upload(uid: string): Promise<void> {
-    return this.db.collection('timeTable-config').doc(uid).set({classList: this.classList.value});
+  public upload(): Promise<string> {
+    return AV.Cloud.run('upload', {data: {list: this.classList.value}})
+      .then(value => (padNumber(value, 6)))
+      .catch(reason => reason.toString());
   }
 
-  download(uid: string): Promise<void> {
-    return this.db.collection('timeTable-config').doc(uid).get().toPromise().then(value =>
-      this.classList.next(value.data().classList)
-    );
+  public download(code: string): Promise<string> {
+    return AV.Cloud.run('getData', {code: +code}).then(value1 => {
+      this.classList.next(JsonHelper.parseArray(Class, value1.list));
+      return '同步成功';
+    }).catch(reason => {
+      return '同步出错:' + reason;
+    });
   }
 }

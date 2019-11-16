@@ -10,7 +10,7 @@ const desktop = userAgent.indexOf(' electron/') > -1 && true || false;
 
 export const environmentCommon = Object.assign({
   desktop,
-  // firebase from environmentLocal
+  // leanCloud from environmentLocal
 }, environmentLocal);
 /*
  * For easier debugging in development mode, you can import the following file

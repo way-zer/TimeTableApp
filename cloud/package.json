@@ -1,0 +1,28 @@
+{
+  "name": "myapp-cloud",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js -- ",
+    "deploy": "rm -rf src/public && cp -r ../dist/MyApp src/public && lean deploy"
+  },
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-connect-history-api-fallback": "^0.3.1",
+    "koa-router": "^7.2.1",
+    "koa-static": "^4.0.1",
+    "koa-views": "^6.0.2",
+    "leancloud-storage": "^3.11.0",
+    "leanengine": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  },
+  "engines": {
+    "node": "13.x"
+  }
+}

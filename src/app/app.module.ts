@@ -25,10 +25,7 @@ import {UsefulLinksService} from './services/useful-links.service';
 import {TimeTableService} from './services/time-table.service';
 import {ClassDetailComponent} from './pages/time-table/class-detail/class-detail.component';
 import {ClassImportService} from './services/class-import.service';
-import {AngularFireAuthModule} from '@angular/fire/auth';
-import {AngularFireModule, FirebaseOptionsToken} from '@angular/fire';
 import {environment} from '../environments/environment';
-import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { TimeTableSettingComponent } from './pages/time-table/time-table-settting/time-table-setting.component';
 import { MyScheduleComponent } from './pages/my-schedule/my-schedule.component';
@@ -64,9 +61,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatDialogModule,
     MatTooltipModule,
     MatIconModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     FormsModule,
     MatOptionModule,
@@ -77,7 +71,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     UsefulLinksService,
     TimeTableService,
     ClassImportService,
-    {provide: FirebaseOptionsToken, useValue: environment.firebase}
   ],
   entryComponents: [
     ClassDetailComponent

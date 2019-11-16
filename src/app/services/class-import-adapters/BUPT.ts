@@ -69,7 +69,7 @@ export default class BUPTParser implements ClassImportAdapter {
         }
         c.times.push(time);
       }
-      map[row[2]] = c;
+      map.set(row[2], c);
     });
     return [...map.values()];
   }

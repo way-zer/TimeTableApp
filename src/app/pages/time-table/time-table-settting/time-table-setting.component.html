@@ -24,25 +24,12 @@
   </div>
 </div>
 <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px">
-  <mat-label fxFlexAlign.gt-sm="center">同步课程表:</mat-label>
-  <ng-container *ngIf="auth.user|async as user; else userLogin">
-    <button (click)="upload(user.uid)" [disabled]="!btnEnable" mat-button>上传课程表</button>
-    <button (click)="download(user.uid)" [disabled]="!btnEnable" mat-button>下载课程表</button>
-    <button (click)="auth.auth.signOut()" mat-button>登出(不删除配置)</button>
-  </ng-container>
-  <ng-template #userLogin>
-    <form (ngSubmit)="login(loginEmail.value,loginPassword.value)">
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input #loginEmail matInput>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input #loginPassword matInput type="password">
-      </mat-form-field>
-      <button mat-button type="submit">登录或注册</button>
-    </form>
-  </ng-template>
+  <mat-label fxFlexAlign.gt-sm="center">同步课程表(同步码有效期为五分钟):</mat-label>
+  <button mat-button [disabled]="!!syncMessage" (click)="syncClick()">{{syncMessage||"点击获取同步码"}}</button>
+  <mat-form-field>
+    <mat-label>输入同步码(6位数字)</mat-label>
+    <input matInput [formControl]="syncForm">
+  </mat-form-field>
 </div>
 <div>
   <a style="color: gray">默认课表仅供预览,如需使用,请导入课表</a><br/>

@@ -6,3 +6,12 @@ export function removeFrom<T>(arr: T[], a: T): T|null {
   }
   return null;
 }
+
+export function padNumber(num: number|string, n: number): string {
+  let len = num.toString().length;
+  while (len < n) {
+    num = '0' + num;
+    len++;
+  }
+  return num.toString();
+}

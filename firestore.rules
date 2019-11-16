@@ -1,9 +1,0 @@
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /timeTable-config/{uid} {
-      allow read, update, delete: if request.auth.uid == uid;
-      allow create: if request.auth.uid != null;
-    }
-  }
-}

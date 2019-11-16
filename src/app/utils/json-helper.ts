@@ -1,3 +1,5 @@
+import {isArray} from 'util';
+
 export type Like<T> =  {
   [P in keyof T]?: Like<T[P]>;
 };
@@ -7,9 +9,13 @@ export interface SerializableObject<T> {
   new (): T;
 }
 export class JsonHelper {
-  public static jsonStringify<T>(c: SerializableObject<T>, obj: T): string {
+  public static jsonStringify<T>(c: SerializableObject<T>, obj: T|T[]): string {
     if (c.beforeJson) {
-      obj = c.beforeJson(obj);
+      if (isArray(obj)) {
+        obj = (obj as T[]).map(c.beforeJson);
+      } else {
+        obj = c.beforeJson(obj);
+      }
     }
     return JSON.stringify(obj);
   }
