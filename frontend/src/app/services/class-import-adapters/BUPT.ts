@@ -51,7 +51,8 @@ export default class BUPTParser implements ClassImportAdapter {
     // 0培养方案	1课程号	2课程名	3课序号	4学分	5课程属性	6考试类型	7教师	8大纲日历	9修读方式	10选课状态	11周次	12星期	13节次	14节数	15校区	16教学楼	17教室
     // 2019级 通信工程（+人工智能，大类招生）	 2122120000	 大学生心理健康	 01	 0.5	 必修	 考查	 杜玉春*	大纲日历	 正常	 置入	  3-7	  1	 1	  2	  沙河校区	  综合办公楼	  办-一层多功能厅
     formatted.forEach((row: string[]) => {
-      const c = map[row[2]] || JsonHelper.parseObject(Class, {name: row[2], score: +row[4], teacher: row[7], place: row[17], times: []});
+      const c = map.get(row[2]) || JsonHelper.parseObject(Class,
+        {name: row[2], score: +row[4], teacher: row[7], place: row[17], times: []});
       const regex = /(|.*：)(\d+)-(\d+)/;
       const weekI = row[11].match(regex);
       if (weekI) {
