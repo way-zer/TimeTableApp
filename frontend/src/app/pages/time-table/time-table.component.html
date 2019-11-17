@@ -5,7 +5,7 @@
   </mat-expansion-panel-header>
   <app-time-table-settting></app-time-table-settting>
 </mat-expansion-panel>
-<table style="width: 100%">
+<table id="table">
   <thead>
   <tr>
     <th style="width: 10%">第{{s.currentWeek|async}}周</th>
@@ -20,13 +20,14 @@
   <tr *ngFor="let row of map|async" style="height: 2em">
     <ng-container *ngFor="let e of row;" [ngSwitch]="e.type">
       <td *ngSwitchCase="'start'" class="start">
-        <b>{{e.data}} </b>
-        <small>{{getTime(e.data)}}</small>
+          <b>{{e.data}} </b><br/>
+          <small>{{getTime(e.data)}}</small>
       </td>
-      <td (click)="showDetail(e.data)" *ngSwitchCase="'class'"
-          [attr.rowspan]="e.data.length" [class.class]="e.data.enable" [class.noClass]="!e.data.enable">
-        <b>{{e.data.name}}</b><br/>
-        <span>{{e.data.time.place||e.data.place}}</span>
+      <td  *ngSwitchCase="'class'" [attr.rowspan]="e.data.length" style="height: inherit">
+        <mat-card (click)="showDetail(e.data)" [class.class]="e.data.enable" [class.noClass]="!e.data.enable" style="padding: 4px">
+          <b>{{e.data.name}}</b><br/>
+          <span>{{e.data.time.place||e.data.place}}</span>
+        </mat-card>
       </td>
       <td *ngSwitchCase="'empty'" class="empty"></td>
     </ng-container>

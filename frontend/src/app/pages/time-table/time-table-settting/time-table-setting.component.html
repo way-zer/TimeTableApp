@@ -23,8 +23,8 @@
     <br/>
   </div>
 </div>
-<div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px">
-  <mat-label fxFlexAlign.gt-sm="center">同步课程表(同步码有效期为五分钟):</mat-label>
+<div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="0">
+  <mat-label fxFlexAlign.gt-xs="center">同步课程表(有效期为五分钟):</mat-label><br/>
   <button mat-button [disabled]="!!syncMessage" (click)="syncClick()">{{syncMessage||"点击获取同步码"}}</button>
   <mat-form-field>
     <mat-label>输入同步码(6位数字)</mat-label>
