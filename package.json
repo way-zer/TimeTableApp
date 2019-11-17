@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.0.0",
-  "main": "src/electron-main.js",
+  "main": "frontend/src/electron-main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
