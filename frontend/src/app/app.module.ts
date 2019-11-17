@@ -45,7 +45,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ScheduleListComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,

@@ -4,12 +4,12 @@
 // @ts-ignore
 import {environmentLocal} from './environment.local';
 
-const userAgent = navigator.userAgent.toLowerCase();
-const desktop = userAgent.indexOf(' electron/') > -1 && true || false;
+// const userAgent = navigator.userAgent.toLowerCase();
+// const desktop = userAgent.indexOf(' electron/') > -1 && true || false;
 
 
 export const environmentCommon = Object.assign({
-  desktop,
+  desktop: false,
   // leanCloud from environmentLocal
 }, environmentLocal);
 /*

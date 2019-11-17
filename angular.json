@@ -124,6 +124,43 @@
               "devServerTarget": "MyApp:serve:production"
             }
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/MyApp-server",
+            "main": "frontend/src/main.server.ts",
+            "tsConfig": "frontend/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "frontend/src/environments/environment.ts",
+                  "with": "frontend/src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": {
+                "scripts": false,
+                "styles": true
+              }
+            }
+          }
+        },
+        "app-shell": {
+          "builder": "@angular-devkit/build-angular:app-shell",
+          "options": {
+            "browserTarget": "MyApp:build",
+            "serverTarget": "MyApp:server",
+            "route": ""
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "MyApp:build:production",
+              "serverTarget": "MyApp:server:production"
+            }
+          }
         }
       }
     }
