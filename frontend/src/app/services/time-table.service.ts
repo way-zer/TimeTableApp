@@ -3,12 +3,34 @@ import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {ClassImportAdapter, ClassImportService} from './class-import.service';
 import {Class, ClassTime, Range, WeekType} from './types/Class';
 import {JsonHelper} from '../utils/json-helper';
-import * as AV from 'leancloud-storage';
 import {padNumber} from '../utils';
+import {distinctUntilChanged, map} from 'rxjs/operators';
+import {DataSyncService} from './data-sync.service';
 
+const TIME_DAY = 1000 * 60 * 60 * 24;
+class Setting {
+  adapterNmae: string;
+  startDate: number;
+  classList: Class[];
+  showNonThisWeek: boolean;
+  highlightToday: boolean;
+
+  static afterParse(obj: Setting) {
+    obj.classList = JsonHelper.parseArray(Class, obj.classList);
+  }
+
+  get currentWeek(): number {
+    const startD = new Date(this.startDate);
+    return Math.ceil(((new Date()).getTime() - startD.getTime()) / (TIME_DAY * 7));
+  }
+}
+
+const SYNC_KEY = 'TimeTable';
+const KEY_SETTING = 'TimeTableSetting';
+// TODO deprecated (keep until 2020)
 const KEY_START_DATE = 'StartDate';
 const KEY_CLASS_LIST = 'ClassList_2';
-const TIME_DAY = 1000 * 60 * 60 * 24;
+
 const MOCK_CLASSES: Class[] = JsonHelper.parseArray(Class, [
   {
     name: '大学生心理健康', score: 0.5, teacher: '杜玉春', place: '办-一层多功能厅', times: [
@@ -51,45 +73,51 @@ const MOCK_CLASSES: Class[] = JsonHelper.parseArray(Class, [
       {weeks: {start: 3, end: 18}, weekDay: 2, session: {start: 13, end: 14}}]
   },
 ]);
+const DEFAULT_SETTING = JsonHelper.parseObject(Setting, {
+  adapterNmae: 'BUPT',
+  classList: MOCK_CLASSES,
+  startDate: 1566662400000,
+});
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimeTableService {
-  public readonly currentWeek = new BehaviorSubject<number>(TimeTableService.calWeek());
-  public readonly classList = new BehaviorSubject(MOCK_CLASSES);
-  private adapterName = this.importService.defaultAdopter.name;
+  public readonly settings = new BehaviorSubject<Setting>(DEFAULT_SETTING);
   private adapter = new BehaviorSubject<ClassImportAdapter>(this.importService.defaultAdopter);
+  public get currentWeek() {return this.settings.value.currentWeek; }
 
-  constructor(private importService: ClassImportService) {
-    if (this.adapterName !== this.adapter.value.name) {
-      importService.getAdopter(this.adapterName).then(a => this.adapter.next(a));
+  constructor(private importService: ClassImportService, private sync: DataSyncService) {
+    if (localStorage.getItem(KEY_SETTING)) {
+      this.settings.next(JsonHelper.parseObject(Setting, localStorage.getItem(KEY_SETTING)));
     }
+    this.settings.subscribe(settings => {
+      localStorage.setItem(KEY_SETTING, JsonHelper.jsonStringify(Setting, settings));
+      if (settings.adapterNmae !== this.adapter.value.name) {
+        importService.getAdopter(settings.adapterNmae).then(a => this.adapter.next(a));
+      }
+    });
+    // TODO deprecated (keep until 2020)
     if (localStorage.getItem(KEY_CLASS_LIST)) {
-      this.classList.next(JsonHelper.parseArray(Class, localStorage.getItem(KEY_CLASS_LIST)));
+      this.updateSetting({classList: JsonHelper.parseArray(Class, localStorage.getItem(KEY_CLASS_LIST))});
+      localStorage.removeItem(KEY_CLASS_LIST);
     }
-    this.classList.subscribe(data => {
-      localStorage.setItem(KEY_CLASS_LIST, JSON.stringify(data));
-    });
-    this.currentWeek.subscribe(week => {
-      const now = new Date();
-      now.setHours(0, 0, 0, 0);
-      now.setTime(now.getTime() - now.getDay() * TIME_DAY);
-      now.setTime(now.getTime() - (week - 1) * TIME_DAY * 7);
-      localStorage.setItem(KEY_START_DATE, now.getTime().toString());
-    });
+    if (localStorage.getItem(KEY_START_DATE)) {
+      this.updateSetting({startDate: +localStorage.getItem(KEY_START_DATE)});
+      localStorage.removeItem(KEY_START_DATE);
+    }
   }
 
-  private static calWeek(): number {
-    if (!localStorage.getItem(KEY_START_DATE)) {
-      return 1;
-    }
-    const startD = new Date(+localStorage.getItem(KEY_START_DATE));
-    return Math.ceil(((new Date()).getTime() - startD.getTime()) / (TIME_DAY * 7));
+  public updateSetting(obj: Partial<Setting>) {
+    this.settings.next(Object.assign(this.settings.value, obj));
   }
 
-  public getClasses(): Observable<[number, Class[]]> {
-    return combineLatest(this.currentWeek, this.classList);
+  public setCurrentWeek(week: number) {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    now.setTime(now.getTime() - now.getDay() * TIME_DAY);
+    now.setTime(now.getTime() - (week - 1) * TIME_DAY * 7);
+    this.updateSetting({startDate: now.getTime()});
   }
 
   public getTimeSet(): string[] {
@@ -107,7 +135,7 @@ export class TimeTableService {
         // noinspection ExceptionCaughtLocallyJS
         throw Error('Empty ClassList');
       }
-      this.classList.next(next);
+      this.updateSetting({classList: next});
     } catch (e) {
       console.error(dom, e);
       return 'Input fail!' + e;
@@ -115,18 +143,13 @@ export class TimeTableService {
     return 'Input successful';
   }
 
-  public upload(): Promise<string> {
-    return AV.Cloud.run('upload', {data: {list: this.classList.value}})
-      .then(value => (padNumber(value, 6)))
-      .catch(reason => reason.toString());
-  }
-
-  public download(code: string): Promise<string> {
-    return AV.Cloud.run('getData', {code: +code}).then(value1 => {
-      this.classList.next(JsonHelper.parseArray(Class, value1.list));
-      return '同步成功';
-    }).catch(reason => {
-      return '同步出错:' + reason;
-    });
+  public syncData(code: string): Promise<string> {
+    if (code) {
+      return this.sync.download(SYNC_KEY, code, object => {
+        this.updateSetting(JsonHelper.parseObject(Setting, object.settings));
+      });
+    } else {
+      return this.sync.upload(SYNC_KEY, {settings: this.settings.value});
+    }
   }
 }

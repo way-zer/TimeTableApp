@@ -8,7 +8,7 @@ import {Class, ClassTime, Range} from '../../services/types/Class';
 
 interface Cell {
   type: string;
-  data: number | Class & { time: ClassTime, enable: boolean, length: number } | null;
+  data: number | Class & { time: ClassTime, enable: boolean, length: number, highlight: boolean } | null;
 }
 
 @Component({
@@ -24,9 +24,11 @@ export class TimeTableComponent implements OnInit {
               ) {}
 
   ngOnInit() {
+    const todayWeekday = new Date().getDay();
     const maxClass = this.s.getTimeSet().length;
-    this.map = this.s.getClasses().pipe(
-      map(([week, cs]) => {
+    this.map = this.s.settings.pipe(
+      map((settings) => {
+        const {currentWeek: week, classList: cs} = settings;
         const m: Cell[][] = [];
         for (let ii = 1; ii <= maxClass; ii++) {
           const l: Cell[] = [{type: 'start', data: ii}];
@@ -37,8 +39,9 @@ export class TimeTableComponent implements OnInit {
         }
         cs.forEach(c => c.times.forEach(t => {
           let s = t.session.start - 1;
-          const data = {type: 'class', data: {...c, time: t, enable: t.include(week), length: t.session.getLength()}};
-          if (t.include(week) || m[s][t.weekDay].type === 'empty') {
+          const highlight = settings.highlightToday && (todayWeekday === t.weekDay);
+          const data = {type: 'class', data: {...c, time: t, enable: t.include(week), length: t.session.getLength(), highlight}};
+          if (data.data.enable || (settings.showNonThisWeek && m[s][t.weekDay].type === 'empty')) {
             m[s][t.weekDay] = data;
           }
           for (s += 1; s < t.session.end; s++) {

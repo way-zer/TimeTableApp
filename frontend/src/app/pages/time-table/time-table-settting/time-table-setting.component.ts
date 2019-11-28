@@ -3,7 +3,6 @@ import {ClassImportService} from '../../../services/class-import.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TimeTableService} from '../../../services/time-table.service';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
-import * as AV from 'leancloud-storage';
 
 @Component({
   selector: 'app-time-table-settting',
@@ -27,7 +26,7 @@ export class TimeTableSettingComponent implements OnInit {
         const code = this.syncForm.value;
         this.syncForm.disable();
         this.syncForm.setValue('正在获取数据');
-        this.s.download(code).then(value1 => {
+        this.s.syncData(code).then(value1 => {
           this.syncForm.setValue(value1);
         });
       }
@@ -36,7 +35,7 @@ export class TimeTableSettingComponent implements OnInit {
 
 
   setWeek(d: number) {
-    this.s.currentWeek.next(this.s.currentWeek.value + d);
+    this.s.setCurrentWeek(this.s.settings.value.currentWeek + d);
   }
 
   inputData(transfer: DataTransfer) {
@@ -50,6 +49,6 @@ export class TimeTableSettingComponent implements OnInit {
 
   syncClick() {
     this.syncMessage = '正在上传数据';
-    this.s.upload().then(value => {this.syncMessage = value; this.cd.detectChanges(); });
+    this.s.syncData(undefined).then(value => {this.syncMessage = value; this.cd.detectChanges(); });
   }
 }

@@ -8,7 +8,7 @@
 <table id="table">
   <thead>
   <tr>
-    <th style="width: 10%">第{{s.currentWeek|async}}周</th>
+    <th style="width: 10%">第{{s.currentWeek}}周</th>
     <th style="width: 18%">周一</th>
     <th style="width: 18%">周二</th>
     <th style="width: 18%">周三</th>
@@ -24,7 +24,10 @@
           <small>{{getTime(e.data)}}</small>
       </td>
       <td  *ngSwitchCase="'class'" [attr.rowspan]="e.data.length" style="height: inherit">
-        <mat-card (click)="showDetail(e.data)" [class.class]="e.data.enable" [class.noClass]="!e.data.enable" style="padding: 4px">
+        <mat-card (click)="showDetail(e.data)" style="padding: 4px"
+                  [class.class]="e.data.enable"
+                  [class.noClass]="!e.data.enable"
+                  [class.highlight]="e.data.highlight">
           <b>{{e.data.name}}</b><br/>
           <span>{{e.data.time.place||e.data.place}}</span>
         </mat-card>

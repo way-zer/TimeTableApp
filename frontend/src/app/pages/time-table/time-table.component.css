@@ -25,6 +25,10 @@ td {
   height: 100%;
 }
 
+.highlight {
+  background-color: darkcyan;
+}
+
 .noClass {
   background-color: darkgray;
   border-radius: 10px;

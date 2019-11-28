@@ -1,8 +1,12 @@
 <div>
   <mat-label>设定当前周:</mat-label>
-  <a (click)="setWeek(-1)" [disabled]="s.currentWeek.value <=1" mat-button> < </a>
-  <span>{{s.currentWeek|async}}</span>
+  <a (click)="setWeek(-1)" [disabled]="s.currentWeek <=1" mat-button> < </a>
+  <span>{{s.currentWeek}}</span>
   <a (click)="setWeek(+1)" mat-button> > </a>
+</div>
+<div>
+  <mat-checkbox labelPosition="before" [checked]="s.settings.value.showNonThisWeek" (change)="s.updateSetting({showNonThisWeek: $event.checked})">显示非本周课程</mat-checkbox><br/>
+  <mat-checkbox labelPosition="before" [checked]="s.settings.value.highlightToday" (change)="s.updateSetting({highlightToday: $event.checked})">高亮当天课程</mat-checkbox>
 </div>
 <mat-expansion-panel style="margin: 10px 0">
   <mat-expansion-panel-header>
