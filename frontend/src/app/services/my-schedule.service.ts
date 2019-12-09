@@ -3,45 +3,61 @@ import {Plan, PlanType} from './types/Plan';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {removeFrom} from '../utils';
+import {JsonHelper} from '../utils/json-helper';
 
 type PlanFilter = (Plan) => boolean;
 
-const KEY_SCHEDULE = 'mySchedule';
-const MOCK_PLANS: Plan[] = [
-  {type: PlanType.Normal, time: '明天', data: {title: 'Test Plan', content: 'Test content'}},
+const SYNC_KEY = 'Schedule';
+const KEY_SETTING = 'MyScheduleSetting';
+const MOCK_PLANS: Plan[] = JsonHelper.parseArray(Plan, [
+  {type: PlanType.Normal, time: Date.now() + 10, priority: 3, data: {title: 'Test Plan', content: 'Test content'}},
+  {type: PlanType.Normal, time: Date.now(), priority: 3, data: {title: 'Test Plan2', content: 'Test content'}},
   {type: PlanType.Normal, time: '后天', data: {title: 'Test Plan', content: 'Good job', finished: true}},
-];
+]);
+
+class Setting {
+  plans = MOCK_PLANS;
+
+  static afterParse(obj: Setting) {
+    obj.plans = JsonHelper.parseArray(Plan, obj.plans);
+  }
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyScheduleService {
-  private plans = new BehaviorSubject(MOCK_PLANS);
-  constructor() {
-    if (localStorage.getItem(KEY_SCHEDULE)) {
-      this.plans.next(JSON.parse(localStorage.getItem(KEY_SCHEDULE)));
-    }
-    this.plans.subscribe(value =>
-      localStorage.setItem(KEY_SCHEDULE, JSON.stringify(value))
-    );
+  private settings = new BehaviorSubject(new Setting());
+
+  get plans(): Observable<Plan[]> {
+    return this.settings.pipe(map(value => value.plans));
   }
-  public getSchedule(filter?: PlanFilter): Observable<Plan[]> {
-    if (!filter) {return this.plans; }
-    return this.plans.pipe(
-      map(value => value.filter(filter))
+
+  constructor() {
+    if (localStorage.getItem(KEY_SETTING)) {
+      // this.settings.next(JsonHelper.parseObject(Setting, localStorage.getItem(KEY_SETTING)));
+    }
+    this.settings.subscribe(value =>
+      localStorage.setItem(KEY_SETTING, JsonHelper.jsonStringify(Setting, value))
     );
   }
 
+  public updateSetting(obj: Partial<Setting>) {
+    this.settings.next(Object.assign(this.settings.value, obj));
+  }
+
   addPlan(plan: Plan) {
-    this.plans.next(this.plans.value.concat(plan));
+    this.updateSetting({plans: this.settings.value.plans.concat(plan)});
   }
 
   togglePlan(plan: Plan) {
     plan.data.finished = !plan.data.finished;
-    this.plans.next(this.plans.value);
+    this.updateSetting({});
   }
 
   deletePlan(plan: Plan) {
-    if (removeFrom(this.plans.value, plan)) { this.plans.next(this.plans.value); }
+    if (removeFrom(this.settings.value.plans, plan)) {
+      this.updateSetting({});
+    }
   }
 }

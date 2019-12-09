@@ -33,6 +33,8 @@ import { ScheduleListComponent } from './pages/my-schedule/schedule-list/schedul
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ScheduleListComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserModule.withServerTransition({appId: 'serverApp'}),
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -65,7 +67,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     FormsModule,
     MatOptionModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule,
+    MatSliderModule
   ],
   providers: [
     UsefulLinksService,

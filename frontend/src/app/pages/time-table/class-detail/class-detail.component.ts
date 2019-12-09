@@ -1,10 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {Class, ClassTime, Range, WeekType} from '../../../services/types/Class';
-import {humanizeTime, Plan, PlanType} from '../../../services/types/Plan';
+import {Plan, PlanType} from '../../../services/types/Plan';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MyScheduleService} from '../../../services/my-schedule.service';
 import * as Moment from 'moment';
+import {JsonHelper} from '../../../utils/json-helper';
 
 @Component({
   selector: 'app-class-detail',
@@ -44,7 +45,7 @@ export class ClassDetailComponent implements OnInit {
     return str;
   }
   briefMap(plan: Plan) {
-    return humanizeTime(plan.time);
+    return plan.humanizeTime;
     // TODO "下次课"具体化
   }
 
@@ -66,7 +67,7 @@ export class ClassDetailComponent implements OnInit {
     } else {
       newt = '下次课';
     }
-    this.scheduleService.addPlan(new Plan(PlanType.HomeWork, newt, data));
+    this.scheduleService.addPlan(JsonHelper.parseObject(Plan, {type: PlanType.HomeWork, time: newt, data}));
     this.newTaskForm.reset();
   }
 }

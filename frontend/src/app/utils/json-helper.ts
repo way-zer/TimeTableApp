@@ -1,7 +1,7 @@
 import {isArray} from 'util';
 
 export type Like<T> =  {
-  [P in keyof T]?: Like<T[P]>;
+  [P in keyof T]?: T[P]|Like<T[P]>;
 };
 export interface SerializableObject<T> {
   beforeJson?(T): T;

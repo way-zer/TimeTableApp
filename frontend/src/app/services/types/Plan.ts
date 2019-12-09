@@ -2,12 +2,6 @@ import * as Moment from 'moment';
 export const enum PlanType {
   HomeWork, Normal
 }
-export function humanizeTime(time: PlanTime): string {
-  if (typeof time === 'string') {
-    return time;
-  }
-  return Moment(time).fromNow();
-}
 export type PlanTime = number|string;
 export interface PlanBaseData {
   title: string;
@@ -18,9 +12,23 @@ export interface PlanBaseData {
 }
 
 export class Plan {
-  constructor(
-    public type: PlanType,
-    public time: PlanTime,
-    public data: PlanBaseData,
-  ) {}
+  type: PlanType;
+  time: PlanTime;
+  priority = 0;
+  data: PlanBaseData;
+  static afterParse(obj: Plan) {
+    // PRESERVE
+  }
+  get humanizeTime(): string {
+    if (typeof this.time === 'string') {
+      return this.time;
+    }
+    return Moment(this.time).fromNow();
+  }
+
+  get exactTime(): Moment.Moment {
+    if (typeof this.time === 'string') {
+      return Moment(0);
+    } else { return Moment(this.time); }
+  }
 }

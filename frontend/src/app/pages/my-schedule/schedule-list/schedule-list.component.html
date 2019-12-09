@@ -9,14 +9,14 @@
             <small style="margin-left: 5px;color: gray">{{briefMap(item)}}</small>
         </mat-checkbox>
       </mat-expansion-panel-header>
-      <ng-template let-time="time" let-data="data" #defaultTemplate>
-        <h5>在{{humanize(time)}}截止</h5>
+      <ng-template let-time="humanizeTime" let-data="data" #defaultTemplate>
+        <h5>在{{time}}截止</h5>
         <p>{{data.content}}</p>
       </ng-template>
       <ng-container *ngTemplateOutlet="template||defaultTemplate; context:item"></ng-container>
       <mat-action-row>
         <mat-checkbox color="warn" #checkbox>
-          Be Careful<button mat-button color="warn" (click)="deletePlan(item)" [disabled]="!checkbox.checked">{{checkbox.checked?"This can't recover":"<-Check Before || Delete It"}}</button>
+          Be Careful<button mat-button color="warn" (click)="deletePlan(item)" [disabled]="!checkbox.checked">{{checkbox.checked?"This can't recover":"<- Delete It"}}</button>
         </mat-checkbox>
       </mat-action-row>
     </mat-expansion-panel>
