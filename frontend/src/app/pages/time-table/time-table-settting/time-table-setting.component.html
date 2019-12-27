@@ -5,8 +5,13 @@
   <a (click)="setWeek(+1)" mat-button> > </a>
 </div>
 <div>
-  <mat-checkbox labelPosition="before" [checked]="s.settings.value.showNonThisWeek" (change)="s.updateSetting({showNonThisWeek: $event.checked})">显示非本周课程</mat-checkbox><br/>
-  <mat-checkbox labelPosition="before" [checked]="s.settings.value.highlightToday" (change)="s.updateSetting({highlightToday: $event.checked})">高亮当天课程</mat-checkbox>
+  <mat-checkbox labelPosition="before" [checked]="s.settings.value.showNonThisWeek"
+                (change)="s.updateSetting({showNonThisWeek: $event.checked})">显示非本周课程
+  </mat-checkbox>
+  <br/>
+  <mat-checkbox labelPosition="before" [checked]="s.settings.value.highlightToday"
+                (change)="s.updateSetting({highlightToday: $event.checked})">高亮当天课程
+  </mat-checkbox>
 </div>
 <mat-expansion-panel style="margin: 10px 0">
   <mat-expansion-panel-header>
@@ -28,8 +33,9 @@
   </div>
 </div>
 <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="0">
-  <mat-label fxFlexAlign.gt-xs="center">同步课程表(有效期为五分钟):</mat-label><br/>
-  <button mat-button [disabled]="!!syncMessage" (click)="syncClick()">{{syncMessage||"点击获取同步码"}}</button>
+  <mat-label fxFlexAlign.gt-xs="center">同步课程表(有效期为五分钟):</mat-label>
+  <br/>
+  <button mat-button [disabled]="!!syncMessage" (click)="syncClick()">{{syncMessage || "点击获取同步码"}}</button>
   <mat-form-field>
     <mat-label>输入同步码(6位数字)</mat-label>
     <input matInput [formControl]="syncForm">

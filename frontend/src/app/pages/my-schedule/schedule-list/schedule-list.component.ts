@@ -5,41 +5,45 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-schedule-list',
-  templateUrl: './schedule-list.component.html',
-  styleUrls: ['./schedule-list.component.css']
+    selector: 'app-schedule-list',
+    templateUrl: './schedule-list.component.html',
+    styleUrls: ['./schedule-list.component.css']
 })
 export class ScheduleListComponent implements OnInit {
-  @Input() filter: (p: Plan) => boolean;
-  @Input() handler: ((value: Plan[]) => Plan[]);
-  @Input() briefMap: (Plan) => string = (plan => plan.data.brief);
-  @ContentChild(TemplateRef, {read: TemplateRef, static: false}) content: TemplateRef<Plan>;
-  @Input() contentTemplate: TemplateRef<Plan>;
-  get template() {
-    return this.contentTemplate || this.content;
-  }
-  data: Observable<Plan[]>;
+    @Input() filter: (p: Plan) => boolean;
+    @Input() handler: ((value: Plan[]) => Plan[]);
+    @Input() briefMap: (Plan) => string = (plan => plan.data.brief);
+    @ContentChild(TemplateRef, {read: TemplateRef, static: false}) content: TemplateRef<Plan>;
+    @Input() contentTemplate: TemplateRef<Plan>;
 
-  constructor(private s: MyScheduleService) { }
-  ngOnInit() {
-    this.data = this.s.plans;
-    if (this.filter) {
-      this.data = this.s.plans.pipe(
-        map(value => value.filter(this.filter))
-      );
+    get template() {
+        return this.contentTemplate || this.content;
     }
-    if (this.handler) {
-      this.data = this.data.pipe(
-        map(this.handler)
-      );
+
+    data: Observable<Plan[]>;
+
+    constructor(private s: MyScheduleService) {
     }
-  }
 
-  toggleTask(item: Plan) {
-    this.s.togglePlan(item);
-  }
+    ngOnInit() {
+        this.data = this.s.plans;
+        if (this.filter) {
+            this.data = this.s.plans.pipe(
+                map(value => value.filter(this.filter))
+            );
+        }
+        if (this.handler) {
+            this.data = this.data.pipe(
+                map(this.handler)
+            );
+        }
+    }
 
-  deletePlan(plan: Plan) {
-    this.s.deletePlan(plan);
-  }
+    toggleTask(item: Plan) {
+        this.s.togglePlan(item);
+    }
+
+    deletePlan(plan: Plan) {
+        this.s.deletePlan(plan);
+    }
 }

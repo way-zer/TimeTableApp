@@ -1,13 +1,12 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {ClassImportAdapter, ClassImportService} from './class-import.service';
-import {Class, ClassTime, Range, WeekType} from './types/Class';
+import {Class, WeekType} from './types/Class';
 import {JsonHelper} from '../utils/json-helper';
-import {padNumber} from '../utils';
-import {distinctUntilChanged, map} from 'rxjs/operators';
 import {DataSyncService} from './data-sync.service';
 
 const TIME_DAY = 1000 * 60 * 60 * 24;
+
 class Setting {
   adapterNmae: string;
   startDate: number;
@@ -85,7 +84,10 @@ const DEFAULT_SETTING = JsonHelper.parseObject(Setting, {
 export class TimeTableService {
   public readonly settings = new BehaviorSubject<Setting>(DEFAULT_SETTING);
   private adapter = new BehaviorSubject<ClassImportAdapter>(this.importService.defaultAdopter);
-  public get currentWeek() {return this.settings.value.currentWeek; }
+
+  public get currentWeek() {
+    return this.settings.value.currentWeek;
+  }
 
   constructor(private importService: ClassImportService, private sync: DataSyncService) {
     if (localStorage.getItem(KEY_SETTING)) {

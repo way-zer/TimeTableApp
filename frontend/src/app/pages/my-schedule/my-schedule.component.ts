@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Plan} from '../../services/types/Plan';
 import * as Moment from 'moment';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -17,9 +17,11 @@ export class MyScheduleComponent implements OnInit {
     day: new FormControl(0, Validators.required),
     time: new FormControl('', Validators.required),
   });
+
   constructor(
     private s: MyScheduleService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -30,12 +32,18 @@ export class MyScheduleComponent implements OnInit {
     ret = ret.sort((a, b) => a.exactTime.isSameOrBefore(b.exactTime) ? -1 : 0);
     return ret;
   }
+
   getBrief(data: Plan): string {
     const stars = '⭐'.repeat(data.priority);
     const time = data.exactTime.format('HH:MM');
     return ` ${time} ${stars}`;
   }
+
   addTask() {
-    // TODO addTask
+    const data = this.newTaskForm.value;
+    const task = new Plan();
+    const moment = Moment();
+    moment.add('day', data.value);
+    moment.hour(data.time.hour);
   }
 }

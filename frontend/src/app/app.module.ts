@@ -26,15 +26,18 @@ import {TimeTableService} from './services/time-table.service';
 import {ClassDetailComponent} from './pages/time-table/class-detail/class-detail.component';
 import {ClassImportService} from './services/class-import.service';
 import {environment} from '../environments/environment';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { TimeTableSettingComponent } from './pages/time-table/time-table-settting/time-table-setting.component';
-import { MyScheduleComponent } from './pages/my-schedule/my-schedule.component';
-import { ScheduleListComponent } from './pages/my-schedule/schedule-list/schedule-list.component';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {TimeTableSettingComponent} from './pages/time-table/time-table-settting/time-table-setting.component';
+import {MyScheduleComponent} from './pages/my-schedule/my-schedule.component';
+import {ScheduleListComponent} from './pages/my-schedule/schedule-list/schedule-list.component';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSliderModule} from '@angular/material/slider';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {SortableUIComponent} from './components/sortable-ui/sortable-ui.component';
+import {SortableItemDirective} from './components/sortable-ui/sortable-item.directive';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,8 @@ import {MatSliderModule} from '@angular/material/slider';
     TimeTableSettingComponent,
     MyScheduleComponent,
     ScheduleListComponent,
+    SortableUIComponent,
+    SortableItemDirective,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -69,7 +74,8 @@ import {MatSliderModule} from '@angular/material/slider';
     MatSelectModule,
     MatCheckboxModule,
     MatRadioModule,
-    MatSliderModule
+    MatSliderModule,
+    DragDropModule
   ],
   providers: [
     UsefulLinksService,
@@ -81,4 +87,5 @@ import {MatSliderModule} from '@angular/material/slider';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

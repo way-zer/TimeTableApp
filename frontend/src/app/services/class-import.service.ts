@@ -23,6 +23,7 @@ export class ClassImportService {
   }
 
   public readonly defaultAdopter = new BUPT();
+
   public getAdopter(name: string): Promise<ClassImportAdapter> {
     return import('./class-import-adapters/BUPT').then(c => new c.default());
   }

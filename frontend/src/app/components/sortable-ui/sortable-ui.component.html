@@ -1,0 +1,12 @@
+<div cdkDropList id="container" (cdkDropListSorted)="handleDrop($event)">
+  <mat-card cdkDrag *ngFor="let title of sortList">
+    <div *cdkDragPlaceholder class="drag-placeholder">={{title}}=</div>
+    <mat-card-title>
+      <span>{{title}}</span>
+      <mat-icon cdkDragHandle class="drag-handle">reorder</mat-icon>
+    </mat-card-title>
+    <mat-card-content>
+      <ng-container [ngTemplateOutlet]="getTemplate(title)"></ng-container>
+    </mat-card-content>
+  </mat-card>
+</div>

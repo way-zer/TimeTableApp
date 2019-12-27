@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { ServerModule } from '@angular/platform-server';
+import {NgModule} from '@angular/core';
+import {ServerModule} from '@angular/platform-server';
 
-import { LoadingComponent } from './pages/loading/loading.component';
+import {LoadingComponent} from './pages/loading/loading.component';
 import {AppModule} from './app.module';
 
 
@@ -13,4 +13,5 @@ import {AppModule} from './app.module';
   bootstrap: [LoadingComponent],
   declarations: [LoadingComponent],
 })
-export class AppServerModule {}
+export class AppServerModule {
+}

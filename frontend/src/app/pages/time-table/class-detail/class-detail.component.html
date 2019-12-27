@@ -7,7 +7,7 @@
     <label>时间:</label>
     <p>
       <ng-container *ngFor="let t of data.times">
-        {{getWeek(t)}}&emsp;{{weekDays[t.weekDay-1]}}&emsp;{{t.session.start}}-{{t.session.end}}&emsp;{{t.place}}<br/>
+        {{getWeek(t)}}&emsp;{{weekDays[t.weekDay - 1]}}&emsp;{{t.session.start}}-{{t.session.end}}&emsp;{{t.place}}<br/>
       </ng-container>
     </p>
   </div>
@@ -18,7 +18,7 @@
     </app-schedule-list>
     <mat-card-actions>
       <form (ngSubmit)="addHomeWork()" [formGroup]="newTaskForm">
-        <mat-form-field  style="width: 100%">
+        <mat-form-field style="width: 100%">
           <mat-label>内容</mat-label>
           <textarea formControlName="content" matInput cdkTextareaAutosize></textarea>
         </mat-form-field>

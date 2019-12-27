@@ -1,39 +1,41 @@
-<app-schedule-list [handler]="todayHandler" [briefMap]="getBrief"></app-schedule-list>
-<form (ngSubmit)="addTask()" [formGroup]="newTaskForm">
-  <mat-card style="margin-top: 20px">
-    <mat-card-title>添加日常安排</mat-card-title>
-    <mat-card-content fxLayout="column">
-      <div fxLayout="row" fxLayoutGap="20px">
-        <mat-form-field>
-          <mat-label>内容</mat-label>
-          <input matInput type="text">
-        </mat-form-field>
-        <mat-label fxFlexAlign="center">优先级 {{slider.value}}</mat-label>
-        <mat-slider min="1" max="5" step="1" value="1" fxFlexAlign="center" formControlName="priority"
-                    #slider></mat-slider>
-      </div>
-      <div fxLayout="row">
-        <mat-form-field>
-          <mat-label>备注(可选)</mat-label>
-          <textarea formControlName="content" matInput cdkTextareaAutosize></textarea>
-        </mat-form-field>
-      </div>
-      <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutGap="20px">
-        <mat-label>选择计划时间</mat-label>
-        <mat-radio-group formControlName="day" fxFlex="nogrow">
-          <mat-radio-button value="0">今天</mat-radio-button>
-          <mat-radio-button value="1">明天</mat-radio-button>
-          <mat-radio-button value="2">后天</mat-radio-button>
-        </mat-radio-group>
-        <mat-form-field fxFlex="nogrow">
-          <mat-label>时间("小时:分钟","13"代表13点整)</mat-label>
-          <input matInput type="time" formControlName="time">
-        </mat-form-field>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button type="reset" color="warn">重置</button>
-      <button mat-button type="submit" color="accent" [disabled]="!newTaskForm.valid">添加</button>
-    </mat-card-actions>
-  </mat-card>
-</form>
+<app-sortable-ui>
+  <app-schedule-list *appSortableItem="'今日安排'" [handler]="todayHandler" [briefMap]="getBrief"></app-schedule-list>
+  <form *appSortableItem="'待定事项'" (ngSubmit)="addTask()" [formGroup]="newTaskForm">
+    <mat-card style="margin-top: 20px">
+      <mat-card-title>添加日常安排</mat-card-title>
+      <mat-card-content fxLayout="column">
+        <div fxLayout="row" fxLayoutGap="20px">
+          <mat-form-field>
+            <mat-label>内容</mat-label>
+            <input matInput type="text">
+          </mat-form-field>
+          <mat-label fxFlexAlign="center">优先级 {{slider.value}}</mat-label>
+          <mat-slider min="1" max="5" step="1" value="1" fxFlexAlign="center" formControlName="priority"
+                      #slider></mat-slider>
+        </div>
+        <div fxLayout="row">
+          <mat-form-field>
+            <mat-label>备注(可选)</mat-label>
+            <textarea formControlName="content" matInput cdkTextareaAutosize></textarea>
+          </mat-form-field>
+        </div>
+        <div fxLayout.gt-xs="row" fxLayout.xs="column" fxLayoutGap="20px">
+          <mat-label>选择计划时间</mat-label>
+          <mat-radio-group formControlName="day" fxFlex="nogrow">
+            <mat-radio-button value="0">今天</mat-radio-button>
+            <mat-radio-button value="1">明天</mat-radio-button>
+            <mat-radio-button value="2">后天</mat-radio-button>
+          </mat-radio-group>
+          <mat-form-field fxFlex="nogrow">
+            <mat-label>时间("小时:分钟","13"代表13点整)</mat-label>
+            <input matInput type="time" formControlName="time">
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button type="reset" color="warn">重置</button>
+        <button mat-button type="submit" color="accent" [disabled]="!newTaskForm.valid">添加</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</app-sortable-ui>

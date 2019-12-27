@@ -15,19 +15,21 @@ import {JsonHelper} from '../../../utils/json-helper';
 export class ClassDetailComponent implements OnInit {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: Class& { time: ClassTime} ,
+    @Inject(MAT_DIALOG_DATA) public data: Class & { time: ClassTime },
     private scheduleService: MyScheduleService,
-  ) {}
+  ) {
+  }
 
   get taskFilter() {
     return (task: Plan) => (task.type === PlanType.HomeWork && task.data.className === this.data.name);
   }
+
   weekDays = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
 
   newTaskForm = new FormGroup({
     content: new FormControl('', Validators.required),
     time: new FormControl('', Validators.required),
-    });
+  });
 
   ngOnInit() {
   }
@@ -41,9 +43,12 @@ export class ClassDetailComponent implements OnInit {
       str += '(双周)';
     } else if (t.type === WeekType.SingleWeek) {
       str += '(单周)';
-    } else { str += ''; }
+    } else {
+      str += '';
+    }
     return str;
   }
+
   briefMap(plan: Plan) {
     return plan.humanizeTime;
     // TODO "下次课"具体化

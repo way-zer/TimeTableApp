@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ClassImportService} from '../../../services/class-import.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TimeTableService} from '../../../services/time-table.service';
@@ -12,12 +12,14 @@ import {FormBuilder, FormControl, Validators} from '@angular/forms';
 export class TimeTableSettingComponent implements OnInit {
   public syncMessage = '';
   public syncForm: FormControl;
+
   constructor(public s: TimeTableService,
               private sInput: ClassImportService,
               private snackBar: MatSnackBar,
               private builder: FormBuilder,
               private cd: ChangeDetectorRef,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.syncForm = this.builder.control('', Validators.pattern(/[0-9]{6}/));
@@ -49,6 +51,9 @@ export class TimeTableSettingComponent implements OnInit {
 
   syncClick() {
     this.syncMessage = '正在上传数据';
-    this.s.syncData(undefined).then(value => {this.syncMessage = value; this.cd.detectChanges(); });
+    this.s.syncData(undefined).then(value => {
+      this.syncMessage = value;
+      this.cd.detectChanges();
+    });
   }
 }

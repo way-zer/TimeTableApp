@@ -4,7 +4,7 @@ import {map} from 'rxjs/operators';
 import {TimeTableService} from '../../services/time-table.service';
 import {MatDialog} from '@angular/material';
 import {ClassDetailComponent} from './class-detail/class-detail.component';
-import {Class, ClassTime, Range} from '../../services/types/Class';
+import {Class, ClassTime} from '../../services/types/Class';
 
 interface Cell {
   type: string;
@@ -21,7 +21,8 @@ export class TimeTableComponent implements OnInit {
 
   constructor(public s: TimeTableService,
               private dialog: MatDialog,
-              ) {}
+  ) {
+  }
 
   ngOnInit() {
     const todayWeekday = new Date().getDay();
@@ -40,7 +41,10 @@ export class TimeTableComponent implements OnInit {
         cs.forEach(c => c.times.forEach(t => {
           let s = t.session.start - 1;
           const highlight = settings.highlightToday && (todayWeekday === t.weekDay);
-          const data = {type: 'class', data: {...c, time: t, enable: t.include(week), length: t.session.getLength(), highlight}};
+          const data = {
+            type: 'class',
+            data: {...c, time: t, enable: t.include(week), length: t.session.getLength(), highlight}
+          };
           if (data.data.enable || (settings.showNonThisWeek && m[s][t.weekDay].type === 'empty')) {
             m[s][t.weekDay] = data;
           }
