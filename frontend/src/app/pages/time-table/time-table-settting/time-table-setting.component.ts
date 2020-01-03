@@ -14,6 +14,7 @@ export class TimeTableSettingComponent implements OnInit {
   public syncForm: FormControl;
 
   constructor(public s: TimeTableService,
+              public inputS: ClassImportService,
               private sInput: ClassImportService,
               private snackBar: MatSnackBar,
               private builder: FormBuilder,
@@ -38,6 +39,10 @@ export class TimeTableSettingComponent implements OnInit {
 
   setWeek(d: number) {
     this.s.setCurrentWeek(this.s.settings.value.currentWeek + d);
+  }
+
+  changeAdapter(ne: string) {
+    this.s.updateSetting({adapterName: ne});
   }
 
   inputData(transfer: DataTransfer) {

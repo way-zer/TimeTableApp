@@ -1,8 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Class} from './types/Class';
-import BUPT from './class-import-adapters/BUPT';
+import {BUPTParser} from './class-import-adapters/BUPT';
+import {BUPTNewParser} from './class-import-adapters/BUPT_NEW';
+import {BehaviorSubject} from 'rxjs';
+import {TimeTableService} from './time-table.service';
 
 export interface ClassImportAdapter {
+  uniqueName: string;
   name: string;
   maxDay: number;
   timeTable: string[];
@@ -14,6 +18,11 @@ export interface ClassImportAdapter {
   parse(dom: HTMLElement): Class[];
 }
 
+const Adapters: ClassImportAdapter[] = [
+  new BUPTParser(),
+  new BUPTNewParser()
+];
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,10 +30,31 @@ export class ClassImportService {
 
   constructor() {
   }
+  public readonly adapters = Adapters;
+  public get defaultAdopter() {return this.adapters[0]; }
+  public readonly adapter = new BehaviorSubject(this.defaultAdopter);
 
-  public readonly defaultAdopter = new BUPT();
-
-  public getAdopter(name: string): Promise<ClassImportAdapter> {
-    return import('./class-import-adapters/BUPT').then(c => new c.default());
+  public changeAdapter(name: string) {
+    if (this.adapter.value.uniqueName === name) { return; }
+    const ne = this.adapters.find(value => value.uniqueName === name);
+    if (ne) { this.adapter.next(ne); }
+  }
+  /**
+   * @param dom Normally is Node body
+   * @return message
+   */
+  public inputClasses(dom: HTMLElement, callback: (res: Class[]) => void ): string {
+    try {
+      const next = this.adapter.value.parse(dom);
+      if (!next.length) {
+        // noinspection ExceptionCaughtLocallyJS
+        throw Error('Empty ClassList');
+      }
+      callback(next);
+    } catch (e) {
+      console.error(dom, e);
+      return 'Input fail!' + e;
+    }
+    return 'Input successful';
   }
 }

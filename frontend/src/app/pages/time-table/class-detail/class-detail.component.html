@@ -7,7 +7,7 @@
     <label>时间:</label>
     <p>
       <ng-container *ngFor="let t of data.times">
-        {{getWeek(t)}}&emsp;{{weekDays[t.weekDay - 1]}}&emsp;{{t.session.start}}-{{t.session.end}}&emsp;{{t.place}}<br/>
+        {{getWeek(t)}}&emsp;{{weekDays[t.weekDay - 1]}}&emsp;{{t.session.toString()}}节&emsp;{{t.place}}<br/>
       </ng-container>
     </p>
   </div>

@@ -36,9 +36,9 @@ export class ClassDetailComponent implements OnInit {
 
   getWeek(t: ClassTime) {
     if (t.type === WeekType.Weeks) {
-      return (t.weeks as number[]).join(', ');
+      return (t.weeks as number[]).join(', ') + ' 周';
     }
-    let str = (t.weeks as Range).start + '-' + (t.weeks as Range).end + '周';
+    let str = (t.weeks as Range).toString() + '周';
     if (t.type === WeekType.DoubleWeek) {
       str += '(双周)';
     } else if (t.type === WeekType.SingleWeek) {

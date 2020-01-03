@@ -1,5 +1,5 @@
 import {JsonHelper} from '../../utils/json-helper';
-import {isObject} from 'util';
+import {isArray, isObject} from 'util';
 
 export enum WeekType {
   Weeks, DoubleWeek, SingleWeek, Range
@@ -9,12 +9,19 @@ export class Range {
   public start: number;
   public end: number;
 
-  public include(i: number) {
+  public includes(i: number) {
     return !(i < this.start || i > this.end);
   }
 
   public getLength() {
     return this.end - this.start + 1;
+  }
+  public equal(obj: Range) {
+    return this.start === obj.start && this.start === obj.end;
+  }
+
+  public toString() {
+    return `${this.start}-${this.end}`;
   }
 }
 
@@ -26,14 +33,12 @@ export class ClassTime {
   public weeks: number[] | Range;
   public weekDay: number;
   public session: Range;
+  // set if having different place
   public place?: string;
-  /**
-   * set if having different place
-   */
   public type: WeekType = WeekType.Range;
 
   static afterParse(obj: ClassTime) {
-    obj.weeks = isObject(obj.weeks) ? JsonHelper.parseObject(Range, obj.weeks as Range) : obj.weeks;
+    obj.weeks = isArray(obj.weeks) ? obj.weeks : JsonHelper.parseObject(Range, obj.weeks as Range);
     obj.session = JsonHelper.parseObject(Range, obj.session);
   }
 
@@ -41,13 +46,13 @@ export class ClassTime {
     if (weekDay && weekDay !== this.weekDay) {
       return false;
     }
-    if (session && !this.session.include(session)) {
+    if (session && !this.session.includes(session)) {
       return false;
     }
     if (this.type === WeekType.Weeks) {
       return (this.weeks as number[]).includes(week);
     }
-    if (!(this.weeks as Range).include(week)) {
+    if (!(this.weeks as Range).includes(week)) {
       return false;
     }
     switch (this.type) {

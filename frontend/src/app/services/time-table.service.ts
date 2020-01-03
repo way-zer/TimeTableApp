@@ -8,7 +8,7 @@ import {DataSyncService} from './data-sync.service';
 const TIME_DAY = 1000 * 60 * 60 * 24;
 
 class Setting {
-  adapterNmae: string;
+  adapterName: string;
   startDate: number;
   classList: Class[];
   showNonThisWeek: boolean;
@@ -26,9 +26,6 @@ class Setting {
 
 const SYNC_KEY = 'TimeTable';
 const KEY_SETTING = 'TimeTableSetting';
-// TODO deprecated (keep until 2020)
-const KEY_START_DATE = 'StartDate';
-const KEY_CLASS_LIST = 'ClassList_2';
 
 const MOCK_CLASSES: Class[] = JsonHelper.parseArray(Class, [
   {
@@ -73,7 +70,7 @@ const MOCK_CLASSES: Class[] = JsonHelper.parseArray(Class, [
   },
 ]);
 const DEFAULT_SETTING = JsonHelper.parseObject(Setting, {
-  adapterNmae: 'BUPT',
+  adapterName: 'BUPT',
   classList: MOCK_CLASSES,
   startDate: 1566662400000,
 });
@@ -83,7 +80,6 @@ const DEFAULT_SETTING = JsonHelper.parseObject(Setting, {
 })
 export class TimeTableService {
   public readonly settings = new BehaviorSubject<Setting>(DEFAULT_SETTING);
-  private adapter = new BehaviorSubject<ClassImportAdapter>(this.importService.defaultAdopter);
 
   public get currentWeek() {
     return this.settings.value.currentWeek;
@@ -95,19 +91,8 @@ export class TimeTableService {
     }
     this.settings.subscribe(settings => {
       localStorage.setItem(KEY_SETTING, JsonHelper.jsonStringify(Setting, settings));
-      if (settings.adapterNmae !== this.adapter.value.name) {
-        importService.getAdopter(settings.adapterNmae).then(a => this.adapter.next(a));
-      }
+      this.importService.changeAdapter(settings.adapterName);
     });
-    // TODO deprecated (keep until 2020)
-    if (localStorage.getItem(KEY_CLASS_LIST)) {
-      this.updateSetting({classList: JsonHelper.parseArray(Class, localStorage.getItem(KEY_CLASS_LIST))});
-      localStorage.removeItem(KEY_CLASS_LIST);
-    }
-    if (localStorage.getItem(KEY_START_DATE)) {
-      this.updateSetting({startDate: +localStorage.getItem(KEY_START_DATE)});
-      localStorage.removeItem(KEY_START_DATE);
-    }
   }
 
   public updateSetting(obj: Partial<Setting>) {
@@ -123,7 +108,7 @@ export class TimeTableService {
   }
 
   public getTimeSet(): string[] {
-    return this.adapter.value.timeTable;
+    return this.importService.adapter.value.timeTable;
   }
 
   /**
@@ -131,18 +116,9 @@ export class TimeTableService {
    * @return message
    */
   public inputClasses(dom: HTMLElement): string {
-    try {
-      const next = this.adapter.value.parse(dom);
-      if (!next.length) {
-        // noinspection ExceptionCaughtLocallyJS
-        throw Error('Empty ClassList');
-      }
-      this.updateSetting({classList: next});
-    } catch (e) {
-      console.error(dom, e);
-      return 'Input fail!' + e;
-    }
-    return 'Input successful';
+    return this.importService.inputClasses(dom, res => {
+      this.updateSetting({classList: res});
+    });
   }
 
   public syncData(code: string): Promise<string> {

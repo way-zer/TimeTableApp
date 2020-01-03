@@ -3,7 +3,8 @@ import {ClassImportAdapter} from '../class-import.service';
 import {JsonHelper} from '../../utils/json-helper';
 
 const LENGTH_TABLE = 18;
-export default class BUPTParser implements ClassImportAdapter {
+export class BUPTParser implements ClassImportAdapter {
+  uniqueName = 'BUPT';
   name = 'BUPT';
   maxDay = 5;
   timeTable = [
