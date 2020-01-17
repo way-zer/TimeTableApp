@@ -12,6 +12,14 @@
   <mat-checkbox labelPosition="before" [checked]="s.settings.value.highlightToday"
                 (change)="s.updateSetting({highlightToday: $event.checked})">高亮当天课程
   </mat-checkbox>
+  <br/>
+  <mat-checkbox labelPosition="before" [checked]="s.settings.value.lockWeekOne"
+                (change)="s.updateSetting({lockWeekOne: $event.checked})">锁定为第一周(假期专用,注意会重置当前周)
+  </mat-checkbox>
+  <br/>
+  <mat-checkbox labelPosition="before" [checked]="s.settings.value.useGirdRender"
+                (change)="s.updateSetting({useGirdRender: $event.checked})">使用Grid方式渲染课表(新版,更高级,功能更强,如遇显示异常请取消)
+  </mat-checkbox>
 </div>
 <mat-expansion-panel style="margin: 10px 0">
   <mat-expansion-panel-header>

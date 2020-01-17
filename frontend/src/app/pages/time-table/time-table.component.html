@@ -5,15 +5,11 @@
   </mat-expansion-panel-header>
   <app-time-table-settting></app-time-table-settting>
 </mat-expansion-panel>
-<table id="table">
+<table *ngIf="!s.settings.value.useGirdRender" id="table">
   <thead>
   <tr>
     <th style="width: 10%">第{{s.currentWeek}}周</th>
-    <th style="width: 18%">周一</th>
-    <th style="width: 18%">周二</th>
-    <th style="width: 18%">周三</th>
-    <th style="width: 18%">周四</th>
-    <th style="width: 18%">周五</th>
+    <th *ngFor="let text of getWeekList()" [style]="'width:'+(90/getWeekList().length)+'%'">{{text}}</th>
   </tr>
   </thead>
   <tbody>
@@ -21,7 +17,7 @@
     <ng-container *ngFor="let e of row;" [ngSwitch]="e.type">
       <td *ngSwitchCase="'start'" class="start">
         <b>{{e.data}} </b><br/>
-        <small>{{getTime(e.data)}}</small>
+        <small>{{getSessionList()[e.data-1]}}</small>
       </td>
       <td *ngSwitchCase="'class'" [attr.rowspan]="e.data.length" style="height: inherit">
         <mat-card (click)="showDetail(e.data)" style="padding: 4px"
@@ -37,3 +33,19 @@
   </tr>
   </tbody>
 </table>
+<!--New Render-->
+<div *ngIf="s.settings.value.useGirdRender" gdColumns="10%" gdAuto="column" id="newTable" gdAlignColumns="stretch center" gdGap="3px">
+  <span class="top">第{{s.currentWeek}}周</span>
+  <span class="top" *ngFor="let text of getWeekList(),index as index" gdColumn="{{index+2}}" gdRow="1">{{text}}</span>
+  <div class="start" *ngFor="let text of getSessionList(),index as index" gdColumn="1" gdRow="{{index+2}}">
+    <b>{{index+1}}</b>
+    <small>{{text}}</small>
+  </div>
+  <mat-card *ngFor="let data of newMap|async" class="classBase"
+            [gdColumn]="data.day+1" [gdRow]="(data.session+1)+' /span '+ data.length"
+            [class.classNot]="!data.enable" [class.highlight]="data.highlight">
+
+    <b>{{data.class.name}}</b><br/>
+    <span>{{data.time.place || data.class.place}}</span>
+  </mat-card>
+</div>

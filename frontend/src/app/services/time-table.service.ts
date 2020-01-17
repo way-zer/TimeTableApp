@@ -13,6 +13,8 @@ class Setting {
   classList: Class[];
   showNonThisWeek: boolean;
   highlightToday: boolean;
+  useGirdRender: boolean;
+  lockWeekOne: boolean; // 锁定为第一周
 
   static afterParse(obj: Setting) {
     obj.classList = JsonHelper.parseArray(Class, obj.classList);
@@ -90,6 +92,7 @@ export class TimeTableService {
       this.settings.next(JsonHelper.parseObject(Setting, localStorage.getItem(KEY_SETTING)));
     }
     this.settings.subscribe(settings => {
+      if (settings.lockWeekOne && settings.currentWeek !== 1) {this.setCurrentWeek(1); }
       localStorage.setItem(KEY_SETTING, JsonHelper.jsonStringify(Setting, settings));
       this.importService.changeAdapter(settings.adapterName);
     });

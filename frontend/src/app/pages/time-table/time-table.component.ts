@@ -5,10 +5,21 @@ import {TimeTableService} from '../../services/time-table.service';
 import {MatDialog} from '@angular/material';
 import {ClassDetailComponent} from './class-detail/class-detail.component';
 import {Class, ClassTime} from '../../services/types/Class';
+import {ClassImportService} from '../../services/class-import.service';
 
 interface Cell {
   type: string;
   data: number | Class & { time: ClassTime, enable: boolean, length: number, highlight: boolean } | null;
+}
+
+interface NewCell {
+  class: Class;
+  enable: boolean;
+  highlight: boolean;
+  day: number;
+  session: number;
+  length: number;
+  time: ClassTime;
 }
 
 @Component({
@@ -18,22 +29,24 @@ interface Cell {
 })
 export class TimeTableComponent implements OnInit {
   map: Observable<Cell[][]>;
+  newMap: Observable<NewCell[]>;
 
   constructor(public s: TimeTableService,
               private dialog: MatDialog,
+              private adapterS: ClassImportService
   ) {
   }
 
   ngOnInit() {
     const todayWeekday = new Date().getDay();
-    const maxClass = this.s.getTimeSet().length;
+    const maxClass = this.getSessionList().length;
     this.map = this.s.settings.pipe(
       map((settings) => {
         const {currentWeek: week, classList: cs} = settings;
         const m: Cell[][] = [];
         for (let ii = 1; ii <= maxClass; ii++) {
           const l: Cell[] = [{type: 'start', data: ii}];
-          for (let d = 0; d < 5; d++) {
+          for (const d of this.getWeekList()) {
             l.push({type: 'empty', data: null});
           }
           m.push(l);
@@ -55,10 +68,23 @@ export class TimeTableComponent implements OnInit {
         return m;
       })
     );
+    this.newMap = this.s.settings.pipe(map(({currentWeek, classList, highlightToday}) => (
+      classList.map(c => (
+        c.times.map(time => ({
+          class: c, enable: time.include(currentWeek), day: time.weekDay, time,
+          length: time.session.getLength(), session: time.session.start,
+          highlight: highlightToday && (todayWeekday === time.weekDay)
+        } as NewCell))
+      )).reduce((list, v) => (list.concat(v)), [])
+    )));
   }
 
-  getTime(data: number) {
-    return this.s.getTimeSet()[data - 1];
+  getSessionList() {
+    return this.adapterS.adapter.value.timeTable;
+  }
+
+  getWeekList() {
+    return ['周一', '周二', '周三', '周四', '周五', '周六', '周日'].slice(0, this.adapterS.adapter.value.maxDay);
   }
 
   showDetail(c: Class) {
