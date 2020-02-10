@@ -5,6 +5,8 @@ import {TimeTableComponent} from './pages/time-table/time-table.component';
 import {Observable} from 'rxjs';
 import {RouteLinkService} from './services/route-link.service';
 import {MyScheduleComponent} from './pages/my-schedule/my-schedule.component';
+import {environment} from '../environments/environment';
+import {TestPageComponent} from './pages/test-page/test-page.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/timeTable', pathMatch: 'full'},
@@ -12,6 +14,10 @@ const routes: Routes = [
   {path: 'timeTable', component: TimeTableComponent},
   {path: 'mySchedule', component: MyScheduleComponent},
 ];
+
+if (!environment.production) {
+  routes.push({path: 'develop', component: TestPageComponent});
+}
 
 @Injectable()
 export class MyPreloadingStrategy implements PreloadingStrategy {
@@ -32,12 +38,15 @@ export class AppRoutingModule {
   constructor(private router: Router, private ser: RouteLinkService) {
     router.errorHandler = error => {
       console.warn(error);
-      this.router.navigate([]);
+      this.router.navigate([]).then();
     };
     ser.registerLinks(
       {path: '/usefulLinks', label: '常用链接'},
       {path: '/timeTable', label: '课程表'},
       {path: '/mySchedule', label: '计划表'},
     );
+    if (!environment.production) {
+      ser.registerLinks({path: '/develop', label: '测试'});
+    }
   }
 }

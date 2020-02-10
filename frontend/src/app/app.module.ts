@@ -38,6 +38,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {SortableUIComponent} from './components/sortable-ui/sortable-ui.component';
 import {SortableItemDirective} from './components/sortable-ui/sortable-item.directive';
+import { TestPageComponent } from './pages/test-page/test-page.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {SortableItemDirective} from './components/sortable-ui/sortable-item.dire
     ScheduleListComponent,
     SortableUIComponent,
     SortableItemDirective,
+    TestPageComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
