@@ -5,7 +5,7 @@ import {TimeTableService} from '../../../services/time-table.service';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 
 @Component({
-  selector: 'app-time-table-settting',
+  selector: 'app-time-table-setting',
   templateUrl: './time-table-setting.component.html',
   styleUrls: ['./time-table-setting.component.css']
 })

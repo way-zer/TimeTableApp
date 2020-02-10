@@ -129,8 +129,8 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/MyApp-server",
-            "main": "frontend/src/main.server.ts",
-            "tsConfig": "frontend/tsconfig.server.json"
+            "main": "frontend/serverApp/main.ts",
+            "tsConfig": "frontend/serverApp/tsconfig.json"
           },
           "configurations": {
             "production": {

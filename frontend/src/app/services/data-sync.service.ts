@@ -1,7 +1,7 @@
 import {Injectable, NgZone} from '@angular/core';
 
 import * as AV from 'leancloud-storage';
-import {padNumber} from '../utils';
+import {padNumber} from '../utils/functions';
 
 @Injectable({
   providedIn: 'root'
