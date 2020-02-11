@@ -33,7 +33,11 @@ export class ClassEditComponent implements OnInit {
   }
 
   addTime() {
-    this.data.times.push(new ClassTime());
+    const time = new ClassTime();
+    // Prevent Null
+    time.weekStr = '1-16';
+    time.sessionStr = '1-2';
+    this.data.times.push(time);
   }
 
   removeTime(time: ClassTime) {
