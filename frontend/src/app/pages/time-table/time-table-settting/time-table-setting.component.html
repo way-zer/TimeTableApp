@@ -1,10 +1,11 @@
-<div>
-  <mat-label>设定当前周:</mat-label>
-  <a (click)="setWeek(-1)" [disabled]="s.currentWeek <=1" mat-button> < </a>
-  <span>{{s.currentWeek}}</span>
-  <a (click)="setWeek(+1)" mat-button> > </a>
-</div>
-<div>
+
+<div style="padding-left: 0.8rem">
+  <div>
+    <mat-label>设定当前周:</mat-label>
+    <a (click)="setWeek(-1)" [disabled]="s.currentWeek <=1" mat-button> < </a>
+    <span>{{s.currentWeek}}</span>
+    <a (click)="setWeek(+1)" mat-button> > </a>
+  </div>
   <mat-checkbox labelPosition="before" [checked]="s.settings.value.showNonThisWeek"
                 (change)="s.updateSetting({showNonThisWeek: $event.checked})">显示非本周课程
   </mat-checkbox>
@@ -21,16 +22,17 @@
                 (change)="s.updateSetting({useGirdRender: $event.checked})">使用Grid方式渲染课表(新版,更高级,功能更强,如遇显示异常请取消)
   </mat-checkbox>
 </div>
-<mat-expansion-panel style="margin: 10px 0">
-  <mat-expansion-panel-header>
-    <mat-panel-title>手动添加课程</mat-panel-title>
-  </mat-expansion-panel-header>
-  <a style="color: gray">待添加, 如需修改, 请使用浏览器开发者工具修改localStorage内数据, 并刷新网页</a><br/>
-  <a style="color: gray">手机请使用同步功能</a>
-</mat-expansion-panel>
-<div>
-  <mat-label>导入课程表:<a style="color: gray">导入功能仅电脑能用，手机请使用同步功能</a></mat-label>
-  <div fxHide.xs>
+<mat-accordion displayMode="flat">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>管理课程</mat-panel-title>
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>自动导课</mat-panel-title>
+      <mat-panel-description>由于系统限制,自动导课仅电脑能用，手机请使用同步功能</mat-panel-description>
+    </mat-expansion-panel-header>
     <h5>自动导课教程: 在另一页面打开学校教务处的课表页面,全选拖动(或复制)到下方区域</h5>
     <mat-form-field>
       <mat-label>请先选择正确的适配器：</mat-label>
@@ -43,19 +45,19 @@
       <input (paste)="inputData($event.clipboardData)" matInput
              (dragover)="$event.preventDefault()" (drop)="inputData($event.dataTransfer)">
     </mat-form-field>
-    <br/>
-  </div>
-</div>
-<div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="0">
-  <mat-label fxFlexAlign.gt-xs="center">同步课程表(有效期为五分钟):</mat-label>
-  <br/>
-  <button mat-button [disabled]="!!syncMessage" (click)="syncClick()">{{syncMessage || "点击获取同步码"}}</button>
-  <mat-form-field>
-    <mat-label>输入同步码(6位数字)</mat-label>
-    <input matInput [formControl]="syncForm">
-  </mat-form-field>
-</div>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>同步课程表(有效期为五分钟)</mat-panel-title>
+    </mat-expansion-panel-header>
+    <button mat-stroked-button [disabled]="!!syncMessage" (click)="syncClick()">{{syncMessage || "点击获取同步码"}}</button>
+    <mat-form-field>
+      <mat-label>输入同步码(6位数字)</mat-label>
+      <input matInput [formControl]="syncForm">
+    </mat-form-field>
+  </mat-expansion-panel>
+</mat-accordion>
 <div>
   <a style="color: gray">默认课表仅供预览,如需使用,请导入课表</a><br/>
-  <a style="color: gray">该课程表系统目前只支持BUPT使用,其他等待适配</a>
+  <a style="color: gray">如需添加适配器,请<a href="https://github.com/way-zer/MyApp/issues/new?assignees=&labels=%E7%94%B3%E8%AF%B7%E9%80%82%E9%85%8D&template=AddAdapter.md&title=%E7%94%B3%E8%AF%B7%E9%80%82%E9%85%8D%3A+xxx%E5%AD%A6%E6%A0%A1">提交issue</a></a>
 </div>

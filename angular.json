@@ -165,5 +165,10 @@
       }
     }
   },
-  "defaultProject": "MyApp"
+  "defaultProject": "MyApp",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

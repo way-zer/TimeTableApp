@@ -38,8 +38,8 @@
   <span class="top">第{{s.currentWeek}}周</span>
   <span class="top" *ngFor="let text of getWeekList(),index as index" gdColumn="{{index+2}}" gdRow="1">{{text}}</span>
   <div class="start" *ngFor="let text of getSessionList(),index as index" gdColumn="1" gdRow="{{index+2}}">
-    <b>{{index+1}}</b>
-    <small>{{text}}</small>
+    <b>{{index+1}}</b><br/>
+    {{text}}
   </div>
   <mat-card *ngFor="let data of newMap|async" class="classBase"
             [gdColumn]="data.day+1" [gdRow]="(data.session+1)+' /span '+ data.length"

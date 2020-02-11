@@ -74,7 +74,8 @@ const MOCK_CLASSES: Class[] = JsonHelper.parseArray(Class, [
 const DEFAULT_SETTING = JsonHelper.parseObject(Setting, {
   adapterName: 'BUPT',
   classList: MOCK_CLASSES,
-  startDate: 1566662400000,
+  showNonThisWeek: true,
+  lockWeekOne: true
 });
 
 @Injectable({
