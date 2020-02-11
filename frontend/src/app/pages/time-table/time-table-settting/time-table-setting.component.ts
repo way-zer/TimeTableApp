@@ -3,6 +3,9 @@ import {ClassImportService} from '../../../services/class-import.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TimeTableService} from '../../../services/time-table.service';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Class} from '../../../services/types/Class';
+import {ClassEditComponent} from '../class-edit/class-edit.component';
 
 @Component({
   selector: 'app-time-table-setting',
@@ -15,7 +18,7 @@ export class TimeTableSettingComponent implements OnInit {
 
   constructor(public s: TimeTableService,
               public inputS: ClassImportService,
-              private sInput: ClassImportService,
+              private dialog: MatDialog,
               private snackBar: MatSnackBar,
               private builder: FormBuilder,
               private cd: ChangeDetectorRef,
@@ -60,5 +63,9 @@ export class TimeTableSettingComponent implements OnInit {
       this.syncMessage = value;
       this.cd.detectChanges();
     });
+  }
+
+  editClass(c?: Class) {
+    this.dialog.open(ClassEditComponent, {disableClose: true, data: {class: c}});
   }
 }

@@ -38,7 +38,8 @@ import {MatSliderModule} from '@angular/material/slider';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {SortableUIComponent} from './components/sortable-ui/sortable-ui.component';
 import {SortableItemDirective} from './components/sortable-ui/sortable-item.directive';
-import { TestPageComponent } from './pages/test-page/test-page.component';
+import {TestPageComponent} from './pages/test-page/test-page.component';
+import {ClassEditComponent} from './pages/time-table/class-edit/class-edit.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { TestPageComponent } from './pages/test-page/test-page.component';
     SortableUIComponent,
     SortableItemDirective,
     TestPageComponent,
+    ClassEditComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -85,7 +87,8 @@ import { TestPageComponent } from './pages/test-page/test-page.component';
     ClassImportService,
   ],
   entryComponents: [
-    ClassDetailComponent
+    ClassDetailComponent,
+    ClassEditComponent,
   ],
   bootstrap: [AppComponent]
 })

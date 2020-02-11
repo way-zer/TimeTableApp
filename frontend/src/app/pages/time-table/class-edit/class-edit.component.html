@@ -1,0 +1,50 @@
+<script src="class-edit.component.ts"></script><span mat-dialog-title>课程编辑: {{data.name}}</span>
+<mat-dialog-content>
+  <div fxLayout="row wrap">
+    <mat-form-field fxFlex="10rem">
+      <mat-label>名字</mat-label>
+      <input matInput [(ngModel)]="data.name">
+      <mat-icon inline matPrefix>book</mat-icon>
+    </mat-form-field>
+    <mat-form-field fxFlex="3.5rem">
+      <mat-label>学分</mat-label>
+      <input matInput [(ngModel)]="data.score" type="number">
+      <mat-icon inline matPrefix>grade</mat-icon>
+    </mat-form-field>
+    <mat-form-field fxFlex="5.5rem">
+      <mat-label>教师</mat-label>
+      <input matInput [(ngModel)]="data.teacher">
+      <mat-icon inline matPrefix>account_circle</mat-icon>
+    </mat-form-field>
+    <mat-form-field fxFlex="8rem">
+      <mat-label>地点</mat-label>
+      <input matInput [(ngModel)]="data.place">
+      <mat-icon inline matPrefix>room</mat-icon>
+    </mat-form-field>
+  </div>
+  <mat-card *ngFor="let time of data.times" fxLayout="row wrap" fxLayoutAlign="start center">
+    <button fxFlex="1.5rem" mat-icon-button (click)="removeTime(time)" color="warn">X</button>
+    <mat-divider vertical></mat-divider>
+    <mat-form-field fxFlex="7.3rem" floatLabel="never">
+      <input matInput [(ngModel)]="time.weekStr" placeholder="1-16">
+      <span matSuffix>周</span>
+    </mat-form-field>
+    <mat-form-field fxFlex="3.3rem" floatLabel="never">
+      <input matInput [(ngModel)]="time.weekDay" placeholder="1">
+      <span matPrefix>星期 </span>
+    </mat-form-field>
+    <mat-form-field fxFlex="4rem" floatLabel="never">
+      <input matInput [(ngModel)]="time.sessionStr" placeholder="1-2">
+      <span matSuffix>节</span>
+    </mat-form-field>
+    <mat-form-field fxFlex="9rem" floatLabel="always">
+      <mat-label>地点</mat-label>
+      <input matInput [(ngModel)]="time.place" [placeholder]="data.place">
+    </mat-form-field>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="addTime()">添加时间段</button>
+  <button mat-button color="primary" (click)="save()" mat-dialog-close>保存</button>
+  <button mat-button mat-dialog-close color="warn">关闭</button>
+</mat-dialog-actions>

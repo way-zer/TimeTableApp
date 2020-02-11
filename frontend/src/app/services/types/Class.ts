@@ -1,5 +1,5 @@
 import {JsonHelper} from '../../utils/json-helper';
-import {isArray, isObject} from 'util';
+import {isArray} from 'util';
 
 export enum WeekType {
   Weeks, DoubleWeek, SingleWeek, Range
@@ -9,6 +9,26 @@ export class Range {
   public start: number;
   public end: number;
 
+  static tryParse(str: any): Range {
+    if (typeof str !== 'string') {
+      return null;
+    }
+    const s = str.split('-');
+    if (s.length === 1) {
+      const nu = +s[0];
+      if (nu) {
+        return JsonHelper.parseObject(Range, {start: nu, end: nu});
+      }
+    } else if (s.length === 2) {
+      const start = +s[0];
+      const end = +s[1];
+      if (start && end) {
+        return JsonHelper.parseObject(Range, {start, end});
+      }
+    }
+    return null;
+  }
+
   public includes(i: number) {
     return !(i < this.start || i > this.end);
   }
@@ -16,6 +36,7 @@ export class Range {
   public getLength() {
     return this.end - this.start + 1;
   }
+
   public equal(obj: Range) {
     return this.start === obj.start && this.start === obj.end;
   }
@@ -36,6 +57,30 @@ export class ClassTime {
   // set if having different place
   public place?: string;
   public type: WeekType = WeekType.Range;
+
+  public get weekStr(): string {
+    if (this.type === WeekType.Weeks) {
+      return (this.weeks as number[]).join(',');
+    } else {
+      return (this.weeks as Range).toString();
+    }
+  }
+
+  public set weekStr(v: string) {
+    if (v.indexOf(',') > 0) {
+      this.weeks = v.split(',').map(vv => +vv);
+    } else {
+      this.weeks = Range.tryParse(v) || this.weeks;
+    }
+  }
+
+  public get sessionStr(): string {
+    return this.session.toString();
+  }
+
+  public set sessionStr(v) {
+    this.session = Range.tryParse(v) || this.session;
+  }
 
   static afterParse(obj: ClassTime) {
     obj.weeks = isArray(obj.weeks) ? obj.weeks : JsonHelper.parseObject(Range, obj.weeks as Range);
@@ -71,7 +116,7 @@ export class Class {
   public score: number;
   public teacher: string;
   public place: string;
-  public times: ClassTime[];
+  public times: ClassTime[] = [];
   public otherData: OtherData[] = [];
 
   static afterParse(obj: Class) {

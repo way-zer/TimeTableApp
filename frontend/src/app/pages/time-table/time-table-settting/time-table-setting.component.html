@@ -27,6 +27,17 @@
     <mat-expansion-panel-header>
       <mat-panel-title>管理课程</mat-panel-title>
     </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item *ngFor="let cls of s.settings.value.classList" disableRipple>
+        <button mat-icon-button (click)="editClass(cls)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        {{cls.name}}
+      </mat-list-item>
+    </mat-list>
+    <mat-action-row>
+      <button mat-flat-button color="primary" (click)="editClass()">新建课程</button>
+    </mat-action-row>
   </mat-expansion-panel>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
