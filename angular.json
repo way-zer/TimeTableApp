@@ -21,6 +21,8 @@
             "aot": false,
             "assets": [
               "frontend/src/favicon.ico",
+              "frontend/src/apple-touch-icon.png",
+              "frontend/src/safari-pinned-tab.svg",
               "frontend/src/assets",
               "frontend/src/manifest.webmanifest"
             ],
