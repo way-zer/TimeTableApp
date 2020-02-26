@@ -29,8 +29,8 @@
       <input matInput [(ngModel)]="time.weekStr" placeholder="1-16">
       <span matSuffix>周</span>
     </mat-form-field>
-    <mat-form-field fxFlex="3.3rem" floatLabel="never">
-      <input matInput [(ngModel)]="time.weekDay" placeholder="1">
+    <mat-form-field fxFlex="3.8rem" floatLabel="never">
+      <input matInput [(ngModel)]="time.weekDay" placeholder="1" type="number">
       <span matPrefix>星期 </span>
     </mat-form-field>
     <mat-form-field fxFlex="4rem" floatLabel="never">
@@ -45,6 +45,7 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="addTime()">添加时间段</button>
+  <button mat-button *ngIf="initData.class" color="warn" (click)="removeThis()" mat-dialog-close>删除当前课程</button>
   <button mat-button color="primary" (click)="save()" mat-dialog-close>保存</button>
   <button mat-button mat-dialog-close color="warn">关闭</button>
 </mat-dialog-actions>

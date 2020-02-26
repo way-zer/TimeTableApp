@@ -13,7 +13,7 @@ import {removeFrom} from '../../../utils/functions';
 export class ClassEditComponent implements OnInit {
   data: Class;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private readonly initData: { class: Class, selected: any }, private s: TimeTableService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public readonly initData: { class: Class, selected: any }, private s: TimeTableService) {
     // initData.class = s.settings.value.classList[0];
     this.data = initData.class ? JsonHelper.parseObject(Class, initData.class) : new Class();
   }
@@ -23,6 +23,9 @@ export class ClassEditComponent implements OnInit {
 
   save() {
     // TODO Check Data
+    this.data.times.forEach(v => {
+      v.weekDay = +v.weekDay || 1;
+    });
     this.data = JsonHelper.parseObject(Class, this.data); // Try fix Range
     if (this.initData.class) {
       Object.assign(this.initData.class, this.data);
@@ -42,5 +45,10 @@ export class ClassEditComponent implements OnInit {
 
   removeTime(time: ClassTime) {
     removeFrom(this.data.times, time);
+  }
+
+  removeThis() {
+    removeFrom(this.s.settings.value.classList, this.initData.class);
+    this.s.updateSetting({});
   }
 }
