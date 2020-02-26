@@ -35,7 +35,7 @@ export class MyScheduleService {
 
   constructor() {
     if (localStorage.getItem(KEY_SETTING)) {
-      // this.settings.next(JsonHelper.parseObject(Setting, localStorage.getItem(KEY_SETTING)));
+      this.settings.next(JsonHelper.parseObject(Setting, localStorage.getItem(KEY_SETTING)));
     }
     this.settings.subscribe(value =>
       localStorage.setItem(KEY_SETTING, JsonHelper.jsonStringify(Setting, value))
