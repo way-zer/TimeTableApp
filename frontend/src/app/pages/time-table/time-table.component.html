@@ -43,8 +43,8 @@
   </div>
   <mat-card *ngFor="let data of newMap|async" class="classBase"
             [gdColumn]="data.day+1" [gdRow]="(data.session+1)+' /span '+ data.length"
-            [class.classNot]="!data.enable" [class.highlight]="data.highlight">
-
+            [class.classNot]="!data.enable" [class.highlight]="data.highlight"
+            (click)="showDetail(data.class)">
     <b>{{data.class.name}}</b><br/>
     <span>{{data.time.place || data.class.place}}</span>
   </mat-card>

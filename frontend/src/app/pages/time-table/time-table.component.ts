@@ -71,7 +71,7 @@ export class TimeTableComponent implements OnInit {
     this.newMap = this.s.settings.pipe(map(({currentWeek, classList, highlightToday}) => (
       classList.map(c => (
         c.times.map(time => ({
-          class: c, enable: time.include(currentWeek), day: time.weekDay, time,
+          class: c, enable: time.include(currentWeek), day: +time.weekDay, time,
           length: time.session.getLength(), session: time.session.start,
           highlight: highlightToday && (todayWeekday === time.weekDay)
         } as NewCell))
