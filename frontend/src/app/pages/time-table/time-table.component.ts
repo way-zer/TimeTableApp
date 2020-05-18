@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TimeTableService} from '../../services/time-table.service';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {ClassDetailComponent} from './class-detail/class-detail.component';
 import {Class, ClassTime} from '../../services/types/Class';
 import {ClassImportService} from '../../services/class-import.service';

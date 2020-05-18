@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Link, UsefulLinksService} from '../../services/useful-links.service';
-import {MatSnackBar} from '@angular/material';
 import {FormControl, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 const URL_REGEX = /^(?:https?:\/\/)([-0-9a-zA-Z.]+)(.*)$/i;
 

@@ -5,18 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './pages/app/app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {UsefulLinksComponent} from './pages/useful-links/useful-links.component';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatDialogModule,
-  MatExpansionModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatSnackBarModule,
-  MatTabsModule,
-  MatTooltipModule,
-} from '@angular/material';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -40,6 +28,21 @@ import {SortableUIComponent} from './components/sortable-ui/sortable-ui.componen
 import {SortableItemDirective} from './components/sortable-ui/sortable-item.directive';
 import {TestPageComponent} from './pages/test-page/test-page.component';
 import {ClassEditComponent} from './pages/time-table/class-edit/class-edit.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatListModule} from '@angular/material/list';
+import {MatCardModule} from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
+import {NZ_I18N, zh_CN} from 'ng-zorro-antd/i18n';
+import {registerLocaleData} from '@angular/common';
+import zh from '@angular/common/locales/zh';
+
+registerLocaleData(zh);
 
 @NgModule({
   declarations: [
@@ -85,6 +88,7 @@ import {ClassEditComponent} from './pages/time-table/class-edit/class-edit.compo
     UsefulLinksService,
     TimeTableService,
     ClassImportService,
+    {provide: NZ_I18N, useValue: zh_CN},
   ],
   entryComponents: [
     ClassDetailComponent,

@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Class, ClassTime, Range, WeekType} from '../../../services/types/Class';
 import {Plan, PlanType} from '../../../services/types/Plan';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
