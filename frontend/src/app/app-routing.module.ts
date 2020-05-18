@@ -13,6 +13,7 @@ const routes: Routes = [
   {path: 'usefulLinks', component: UsefulLinksComponent},
   {path: 'timeTable', component: TimeTableComponent},
   {path: 'mySchedule', component: MyScheduleComponent},
+  {path: 'todos', loadChildren: () => import('../todos/todos.module').then(m => m.TodosModule)},
 ];
 
 if (!environment.production) {
