@@ -34,21 +34,37 @@ export class BUPTNewParser implements ClassImportAdapter {
     const formatted = [];
     for (let i = 0; i < datas.length; i++) {
       const data = datas.item(i);
-      const nodes = data.childNodes; // 0:课程名(可能占2位) 1:span(不明) 2:br 3:教师 4:br 5:周次与节次 6:br 7:地点 8:br
-      const le = nodes.length;
-      if (le >= 9) {
-        const d = {
-          name: nodes.item(0).textContent,
-          teacher: nodes.item(le - 6).textContent,
+      const nodes = data.childNodes; // 0:课程名(可能占2位) 2:br 3:教师 4:br 5:周次与节次 6:br 7:地点 8:br
+      var d = {} as any
+      nodes.forEach(n => {
+        if (!d.name) d = {
+          name: "", teacher: "",
+          time: "",
+          place: "",
           weekday: +data.id.split('-')[1], // Like "A73306CD9B4B438F8F8666870F41A417-1-2",Get 1
-          time: nodes.item(le - 4).textContent,
-          place: nodes.item(le - 2).textContent,
-        };
-        if (le === 11) {
-          d.name += nodes.item(2).textContent;
         }
-        formatted.push(d);
-      }
+        switch (true) {
+          case (n.nodeType == Node.TEXT_NODE && !n.textContent.startsWith("--")):
+            d.name = n.textContent;
+            return;
+          case (n.nodeType == Node.TEXT_NODE)://多个课程分隔符 -------
+            formatted.push(d)
+            d = {}
+            return;
+          case ((n as Element).tagName == "BR"):
+            return;
+          case ((n as HTMLFontElement).title == "老师"):
+            d.teacher = n.textContent;
+            return;
+          case ((n as HTMLFontElement).title == "周次(节次)"):
+            d.time = n.textContent;
+            return;
+          case ((n as HTMLFontElement).title == "教室"):
+            d.place = n.textContent;
+            return;
+        }
+      })
+      if (d.name) formatted.push(d)
     }
 
     const map = new Map<string, Class>();
