@@ -1,0 +1,22 @@
+.todo {
+  background-color: rgba(81, 153, 133, 0.6);
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+  margin-bottom: 0.8rem;
+  position: relative;
+
+  h3 {
+    font-size: 24px;
+    padding-bottom: 1.2rem;
+  }
+
+  a {
+    position: absolute;
+    right: 1rem;
+  }
+
+  p {
+    position: absolute;
+    bottom: 0;
+  }
+}

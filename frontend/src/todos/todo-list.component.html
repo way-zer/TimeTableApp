@@ -1,0 +1,7 @@
+<nz-list>
+  <nz-list-item class="todo" *ngFor="let todo of srv.data | async">
+    <h3>{{todo.title}}</h3>
+    <p>计划{{todo.likelyTime / 60 / 60}}小时 当前进度{{todo.process / 100}}%</p>
+    <a nz-button nzGhost>开始</a>
+  </nz-list-item>
+</nz-list>
