@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Plan, PlanType} from './types/Plan';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {removeFrom} from '../utils/functions';
-import {JsonHelper} from '../utils/json-helper';
+import {removeFrom} from '../../utils/functions';
+import {JsonHelper} from '../../utils/json-helper';
 
 type PlanFilter = (Plan) => boolean;
 

@@ -5,7 +5,7 @@ import {Plan, PlanType} from '../../../services/types/Plan';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MyScheduleService} from '../../../services/my-schedule.service';
 import * as Moment from 'moment';
-import {JsonHelper} from '../../../utils/json-helper';
+import {JsonHelper} from '../../../../utils/json-helper';
 
 @Component({
   selector: 'app-class-detail',

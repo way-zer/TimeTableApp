@@ -1,4 +1,4 @@
-import {JsonHelper} from '../../utils/json-helper';
+import {JsonHelper} from '../../../utils/json-helper';
 import {isArray} from 'util';
 
 export enum WeekType {

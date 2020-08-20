@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Class, ClassTime} from '../../../services/types/Class';
-import {JsonHelper} from '../../../utils/json-helper';
+import {JsonHelper} from '../../../../utils/json-helper';
 import {TimeTableService} from '../../../services/time-table.service';
-import {removeFrom} from '../../../utils/functions';
+import {removeFrom} from '../../../../utils/functions';
 
 @Component({
   selector: 'app-class-edit',

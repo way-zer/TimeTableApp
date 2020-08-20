@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "MyApp": {
+    "my_app": {
       "projectType": "application",
       "schematics": {},
       "root": "frontend",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/MyApp",
+            "outputPath": "dist/my_app",
             "index": "frontend/src/index.html",
             "main": "frontend/src/main.ts",
             "polyfills": "frontend/src/polyfills.ts",
@@ -32,9 +32,8 @@
               }
             ],
             "styles": [
-              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "frontend/src/styles.css"
+              "frontend/src/styles.scss"
             ],
             "scripts": []
           },
@@ -75,18 +74,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "MyApp:build"
+            "browserTarget": "my_app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "MyApp:build:production"
+              "browserTarget": "my_app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MyApp:build"
+            "browserTarget": "my_app:build"
           }
         },
         "test": {
@@ -126,18 +125,18 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "frontend/e2e/protractor.conf.js",
-            "devServerTarget": "MyApp:serve"
+            "devServerTarget": "my_app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "MyApp:serve:production"
+              "devServerTarget": "my_app:serve:production"
             }
           }
         },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/MyApp-server",
+            "outputPath": "dist/my_app-server",
             "main": "frontend/serverApp/main.ts",
             "tsConfig": "frontend/serverApp/tsconfig.json"
           },
@@ -160,24 +159,24 @@
         "app-shell": {
           "builder": "@angular-devkit/build-angular:app-shell",
           "options": {
-            "browserTarget": "MyApp:build",
-            "serverTarget": "MyApp:server",
+            "browserTarget": "my_app:build",
+            "serverTarget": "my_app:server",
             "route": ""
           },
           "configurations": {
             "production": {
-              "browserTarget": "MyApp:build:production",
-              "serverTarget": "MyApp:server:production"
+              "browserTarget": "my_app:build:production",
+              "serverTarget": "my_app:server:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "MyApp",
+  "defaultProject": "my_app",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "scss"
+      "style": "scss"
     }
   }
 }

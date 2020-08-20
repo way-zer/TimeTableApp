@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {ClassImportAdapter, ClassImportService} from './class-import.service';
+import {ClassImportService} from './class-import.service';
 import {Class, WeekType} from './types/Class';
-import {JsonHelper} from '../utils/json-helper';
+import {JsonHelper} from '../../utils/json-helper';
 import {DataSyncService} from './data-sync.service';
 
 const TIME_DAY = 1000 * 60 * 60 * 24;

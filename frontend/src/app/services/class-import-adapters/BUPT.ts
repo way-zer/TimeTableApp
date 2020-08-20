@@ -1,6 +1,6 @@
 import {Class, ClassTime, Range, WeekType} from '../types/Class';
 import {ClassImportAdapter} from '../class-import.service';
-import {JsonHelper} from '../../utils/json-helper';
+import {JsonHelper} from '../../../utils/json-helper';
 
 const LENGTH_TABLE = 18;
 export class BUPTParser implements ClassImportAdapter {
