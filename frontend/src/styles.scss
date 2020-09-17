@@ -8,7 +8,7 @@ $light-theme: mat-light-theme(mat-palette($mat-light-blue), mat-palette($mat-ind
 @include angular-material-theme($light-theme);
 
 @media (prefers-color-scheme: dark) {
-  body {
+  html, body {
     background-color: #303030 !important;
   }
   $dark-theme: mat-dark-theme(mat-palette($mat-blue), mat-palette($mat-blue-grey, A600, A400, 800), mat-palette($mat-red));
