@@ -1,3 +1,4 @@
+<title>课程表</title>
 <mat-expansion-panel>
   <mat-expansion-panel-header>
     <mat-panel-title>设置</mat-panel-title>
@@ -5,11 +6,12 @@
   </mat-expansion-panel-header>
   <app-time-table-setting></app-time-table-setting>
 </mat-expansion-panel>
-<table *ngIf="!s.settings.value.useGirdRender" id="table">
+<table *ngIf="!s.settings.value.useGirdRender" class="table">
   <thead>
   <tr>
-    <th style="width: 10%">第{{s.currentWeek}}周</th>
-    <th *ngFor="let text of getWeekList()" [style]="'width:'+(90/getWeekList().length)+'%'">{{text}}</th>
+    <th style="width: 10%" class="top">第{{s.currentWeek}}周</th>
+    <th *ngFor="let text of getWeekList(),index as i" [style]="'width:'+(90/getWeekList().length)+'%'"
+        class="top" [class.highlightWeek]="s.settings.value.highlightToday&&this.todayWeekday==i+1">{{text}}</th>
   </tr>
   </thead>
   <tbody>
@@ -17,11 +19,11 @@
     <ng-container *ngFor="let e of row;" [ngSwitch]="e.type">
       <td *ngSwitchCase="'start'" class="start">
         <b>{{e.data}} </b><br/>
-        <small>{{getSessionList()[e.data-1]}}</small>
+        <small>{{getSessionList()[e.data - 1]}}</small>
       </td>
       <td *ngSwitchCase="'class'" [attr.rowspan]="e.data.length" style="height: inherit">
-        <mat-card (click)="showDetail(e.data)" style="padding: 4px"
-                  [class.class]="e.data.enable"
+        <!--                  [class.class]="e.data.enable"-->
+        <mat-card (click)="showDetail(e.data)" class="classBase"
                   [class.noClass]="!e.data.enable"
                   [class.highlight]="e.data.highlight">
           <b>{{e.data.name}}</b><br/>
@@ -34,16 +36,18 @@
   </tbody>
 </table>
 <!--New Render-->
-<div *ngIf="s.settings.value.useGirdRender" gdColumns="10%" gdAuto="column" id="newTable" gdAlignColumns="stretch center" gdGap="3px">
+<div *ngIf="s.settings.value.useGirdRender" gdColumns="10%" gdAuto="column" class="table"
+     gdAlignColumns="stretch center" gdGap="3px">
   <span class="top">第{{s.currentWeek}}周</span>
-  <span class="top" *ngFor="let text of getWeekList(),index as index" gdColumn="{{index+2}}" gdRow="1">{{text}}</span>
+  <span class="top" *ngFor="let text of getWeekList(),index as i" gdColumn="{{i+2}}" gdRow="1"
+        [class.highlightWeek]="s.settings.value.highlightToday&&this.todayWeekday==i+1">{{text}}</span>
   <div class="start" *ngFor="let text of getSessionList(),index as index" gdColumn="1" gdRow="{{index+2}}">
-    <b>{{index+1}}</b><br/>
+    <b>{{index + 1}}</b><br/>
     {{text}}
   </div>
   <mat-card *ngFor="let data of newMap|async" class="classBase"
             [gdColumn]="data.day+1" [gdRow]="(data.session+1)+' /span '+ data.length"
-            [class.classNot]="!data.enable" [class.highlight]="data.highlight"
+            [class.noClass]="!data.enable" [class.highlight]="data.highlight"
             (click)="showDetail(data.class)">
     <b>{{data.class.name}}</b><br/>
     <span>{{data.time.place || data.class.place}}</span>

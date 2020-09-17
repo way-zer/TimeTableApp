@@ -1,11 +1,9 @@
-#table {
-  width: 100%;
-  background-color: rgba(169, 169, 169, 0.2);
-}
+@import "~@angular/material/theming";
 
-th {
-  background-color: darkgray;
-  opacity: 0.6;
+.table {
+  width: 100%;
+  background-color: rgba(169, 169, 169, 0.05);
+  border-radius: 10px;
 }
 
 td {
@@ -14,8 +12,6 @@ td {
 
 .start {
   padding-top: 2px;
-  background-color: darkgray;
-  opacity: 0.8;
   min-height: 2em;
   height: 100%;
   /*color: black;*/
@@ -23,28 +19,19 @@ td {
 }
 
 .classBase{
-  background-color: darkolivegreen;
   border-radius: 10px;
   height: 100%;
   padding: 4px;
   box-sizing: border-box;
 }
 
-.class {
-  background-color: darkolivegreen;
-  border-radius: 10px;
-  height: 100%;
-}
-
 .highlight {
-  background-color: darkcyan;
+  opacity: 1;
 }
 
 .noClass {
-  background-color: darkgray;
-  border-radius: 10px;
-  opacity: 0.4;
-  height: 100%;
+  background-color: rgba(#000, 0.1);
+  opacity: 0.8;
 }
 
 .empty {
@@ -52,17 +39,34 @@ td {
   opacity: 0.2;
 }
 
-#newTable{
-  background-color: rgba(169, 169, 169, 0.2);
-}
-
 .top {
-  background-color: darkgray;
-  opacity: 0.6;
   text-align: center;
 }
 
-.classNot{
-  background-color: darkgray;
-  opacity: 0.4;
+.highlightWeek {
+  font-weight: bolder;
+  color: black;
 }
+
+@mixin theme($mainColor) {
+  .start {
+    background-color: mat-color($mainColor, 50, 0.6);
+  }
+  .classBase {
+    background-color: mat-color($mainColor, 200, 0.8);
+  }
+  .highlight {
+    background-color: mat-color($mainColor, A400);
+  }
+  .top {
+    background-color: mat-color($mainColor, 100, 0.8);
+  }
+  .highlightWeek {
+    background-color: mat-color($mainColor, 400);
+  }
+}
+
+@include theme($mat-light-blue);
+//@media (prefers-color-scheme: dark){
+//  @include theme($mat-green);
+//}

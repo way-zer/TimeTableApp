@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Title} from '@angular/platform-browser';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TimeTableService} from '../../services/time-table.service';
@@ -30,15 +31,17 @@ interface NewCell {
 export class TimeTableComponent implements OnInit {
   map: Observable<Cell[][]>;
   newMap: Observable<NewCell[]>;
+  todayWeekday = new Date().getDay()
 
   constructor(public s: TimeTableService,
               private dialog: MatDialog,
-              private adapterS: ClassImportService
+              private adapterS: ClassImportService,
+              title: Title
   ) {
+    title.setTitle("课程表")
   }
 
   ngOnInit() {
-    const todayWeekday = new Date().getDay();
     const maxClass = this.getSessionList().length;
     this.map = this.s.settings.pipe(
       map((settings) => {
@@ -53,7 +56,7 @@ export class TimeTableComponent implements OnInit {
         }
         cs.forEach(c => c.times.forEach(t => {
           let s = t.session.start - 1;
-          const highlight = settings.highlightToday && (todayWeekday === t.weekDay);
+          const highlight = settings.highlightToday && (this.todayWeekday === t.weekDay);
           const data = {
             type: 'class',
             data: {...c, time: t, enable: t.include(week), length: t.session.getLength(), highlight}
@@ -73,9 +76,10 @@ export class TimeTableComponent implements OnInit {
         c.times.map(time => ({
           class: c, enable: time.include(currentWeek), day: +time.weekDay, time,
           length: time.session.getLength(), session: time.session.start,
-          highlight: highlightToday && (todayWeekday === time.weekDay)
+          highlight: highlightToday && (this.todayWeekday === time.weekDay)
         } as NewCell))
       )).reduce((list, v) => (list.concat(v)), [])
+        .filter((v, _, arr) => (v.enable || !arr.some(it => (it != v && it.day == v.day && it.session == v.session))))//去除同一时间的重复课程
     )));
   }
 
