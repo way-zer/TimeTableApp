@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Class} from './types/Class';
 import {BUPTParser} from './class-import-adapters/BUPT';
-import {BUPTNewParser} from './class-import-adapters/BUPT_NEW';
+import {BUPTOLDParser} from './class-import-adapters/BUPT_OLD';
 import {BehaviorSubject} from 'rxjs';
-import {TimeTableService} from './time-table.service';
 
 export interface ClassImportAdapter {
   uniqueName: string;
@@ -20,7 +19,7 @@ export interface ClassImportAdapter {
 
 const Adapters: ClassImportAdapter[] = [
   new BUPTParser(),
-  new BUPTNewParser()
+  new BUPTOLDParser(),
 ];
 
 @Injectable({

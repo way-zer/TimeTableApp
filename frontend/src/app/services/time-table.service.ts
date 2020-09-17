@@ -31,6 +31,14 @@ const KEY_SETTING = 'TimeTableSetting';
 
 const MOCK_CLASSES: Class[] = JsonHelper.parseArray(Class, [
   {
+    name: '当前显示的默认课表仅用于展示', score: 0.5, teacher: '', place: '', times: [
+      {weeks: {start: 1, end: 1}, weekDay: 3, session: {start: 3, end: 5}}]
+  },
+  {
+    name: '请在上方设置中配置课程或自动导课', score: 0.5, teacher: '', place: '', times: [
+      {weeks: {start: 1, end: 1}, weekDay: 3, session: {start: 6, end: 8}}]
+  },
+  {
     name: '大学生心理健康', score: 0.5, teacher: '杜玉春', place: '办-一层多功能厅', times: [
       {weeks: {start: 3, end: 6}, weekDay: 1, session: {start: 1, end: 2}}]
   },
@@ -72,7 +80,7 @@ const MOCK_CLASSES: Class[] = JsonHelper.parseArray(Class, [
   },
 ]);
 const DEFAULT_SETTING = JsonHelper.parseObject(Setting, {
-  adapterName: 'BUPT',
+  adapterName: 'BUPT2',
   classList: MOCK_CLASSES,
   showNonThisWeek: true,
   lockWeekOne: true

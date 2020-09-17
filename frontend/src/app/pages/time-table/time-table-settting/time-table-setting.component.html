@@ -42,9 +42,9 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>自动导课</mat-panel-title>
-      <mat-panel-description>由于系统限制,自动导课仅电脑能用，手机请使用同步功能</mat-panel-description>
+      <mat-panel-description>部分浏览器可能无法使用</mat-panel-description>
     </mat-expansion-panel-header>
-    <h5>自动导课教程: 在另一页面打开学校教务处的课表页面,全选拖动(或复制)到下方区域</h5>
+    <h5>自动导课教程: 在另一页面打开学校教务处的课表页面,全选复制粘贴(或拖动)到下方区域</h5>
     <mat-form-field>
       <mat-label>请先选择正确的适配器：</mat-label>
       <mat-select #chooseAdapter [value]="inputS.adapter.value.uniqueName" (valueChange)="changeAdapter(chooseAdapter.value)">
