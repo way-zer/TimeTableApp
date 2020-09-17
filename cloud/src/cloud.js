@@ -15,5 +15,5 @@ fs.readdirSync(path.join(__dirname, 'functions')).forEach(file => {
  * 一个简单的云代码方法
  */
 AV.Cloud.define('ping', async () => {
-    return Promise.resolve('Pong!');
+    return 'Pong!';
 });
